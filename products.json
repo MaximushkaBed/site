@@ -1,0 +1,192 @@
+{
+  "products": [
+    {
+      "id": "t1",
+      "name": "Футболка Dead Eyes",
+      "price": 9800,
+      "categories": ["футболки", "мужское"],
+      "image": "sources/products/t-shirts/IMG_4600tshirt.webp",
+      "inStock": true,
+      "sizes": ["S", "M", "L", "XL"],
+      "description": "Черная футболка с принтом Dead Eyes",
+      "dateAdded": "2024-03-15"
+    },
+    {
+      "id": "t2",
+      "name": "Футболка Classic White",
+      "price": 5000,
+      "oldPrice": 9000,
+      "categories": ["футболки", "мужское", "женское"],
+      "image": "sources/products/t-shirts/IMG_2062.5.5.2.1.webp",
+      "inStock": true,
+      "sizes": ["S", "M", "L"],
+      "description": "Базовая белая футболка",
+      "dateAdded": "2024-03-10"
+    },
+    {
+      "id": "t3",
+      "name": "Футболка Oblivio Print",
+      "price": 8900,
+      "categories": ["футболки", "мужское"],
+      "image": "sources/products/t-shirts/IMG-4302.webp",
+      "inStock": false,
+      "sizes": ["M", "L", "XL"],
+      "description": "Черная футболка с принтом Oblivio",
+      "dateAdded": "2024-03-01"
+    },
+    {
+      "id": "s1",
+      "name": "Рубашка Classic Black",
+      "price": 12500,
+      "categories": ["рубашки", "мужское"],
+      "image": "sources/products/рубашки/IMG-4475.webp",
+      "inStock": true,
+      "sizes": ["S", "M", "L", "XL"],
+      "description": "Классическая черная рубашка",
+      "dateAdded": "2024-03-14"
+    },
+    {
+      "id": "s2",
+      "name": "Рубашка Vintage White",
+      "price": 13500,
+      "categories": ["рубашки", "мужское", "женское"],
+      "image": "sources/products/рубашки/IMG-7623.webp",
+      "inStock": true,
+      "sizes": ["XS", "S", "M", "L"],
+      "description": "Винтажная белая рубашка свободного кроя",
+      "dateAdded": "2024-03-12"
+    },
+    {
+      "id": "p1",
+      "name": "Штаны Cargo Black",
+      "price": 15000,
+      "categories": ["штаны", "мужское"],
+      "image": "sources/products/штаны/IMG-0204.webp",
+      "inStock": true,
+      "sizes": ["30", "32", "34", "36"],
+      "description": "Черные карго штаны",
+      "dateAdded": "2024-03-08"
+    },
+    {
+      "id": "p2",
+      "name": "Джинсы Classic Blue",
+      "price": 14000,
+      "categories": ["штаны", "мужское", "женское"],
+      "image": "sources/products/штаны/IMG-1488.webp",
+      "inStock": true,
+      "sizes": ["28", "30", "32", "34"],
+      "description": "Классические синие джинсы",
+      "dateAdded": "2024-03-05"
+    },
+    {
+      "id": "o1",
+      "name": "Куртка Winter Black",
+      "price": 25000,
+      "categories": ["верхняя", "мужское"],
+      "image": "sources/products/outwears/08737939-D15F-46B5-ADD6-F4494006A246.webp",
+      "inStock": true,
+      "sizes": ["M", "L", "XL"],
+      "description": "Зимняя черная куртка",
+      "dateAdded": "2024-03-13"
+    },
+    {
+      "id": "o2",
+      "name": "Бомбер Classic",
+      "price": 19000,
+      "categories": ["верхняя", "мужское", "женское"],
+      "image": "sources/products/outwears/IMG-3414.webp",
+      "inStock": false,
+      "sizes": ["S", "M", "L"],
+      "description": "Классический бомбер",
+      "dateAdded": "2024-02-28"
+    },
+    {
+      "id": "a1",
+      "name": "Кепка Oblivio",
+      "price": 6000,
+      "categories": ["аксессуары", "мужское", "женское"],
+      "image": "sources/products/acsessories/120.webp",
+      "inStock": true,
+      "sizes": ["ONE SIZE"],
+      "description": "Кепка с логотипом Oblivio",
+      "dateAdded": "2024-03-11"
+    },
+    {
+      "id": "a2",
+      "name": "Сумка Tote Black",
+      "price": 4500,
+      "categories": ["аксессуары", "мужское", "женское"],
+      "image": "sources/products/acsessories/174.webp",
+      "inStock": true,
+      "sizes": ["ONE SIZE"],
+      "description": "Черная сумка-тоут",
+      "dateAdded": "2024-03-09"
+    },
+    {
+      "id": "wt1",
+      "name": "Футболка Crop Top",
+      "price": 7500,
+      "categories": ["футболки", "женское"],
+      "image": "sources/products/t-shirts/IMG_46012.webp",
+      "inStock": true,
+      "sizes": ["XS", "S", "M"],
+      "description": "Укороченная футболка",
+      "dateAdded": "2024-03-07"
+    },
+    {
+      "id": "wp1",
+      "name": "Брюки Wide Leg",
+      "price": 13500,
+      "categories": ["штаны", "женское"],
+      "image": "sources/products/штаны/99_27d2d212-94b5-4ddc-b561-75f11dfa71ed.webp",
+      "inStock": true,
+      "sizes": ["XS", "S", "M", "L"],
+      "description": "Широкие брюки",
+      "dateAdded": "2024-03-06"
+    },
+    {
+      "id": "a3",
+      "name": "Шарф Winter",
+      "price": 5500,
+      "categories": ["аксессуары", "мужское", "женское"],
+      "image": "sources/products/acsessories/IMG-4250.webp",
+      "inStock": true,
+      "sizes": ["ONE SIZE"],
+      "description": "Зимний шарф",
+      "dateAdded": "2024-03-04"
+    },
+    {
+      "id": "a4",
+      "name": "Носки Classic",
+      "price": 2500,
+      "categories": ["аксессуары", "мужское", "женское"],
+      "image": "sources/products/acsessories/IMG-6377.webp",
+      "inStock": true,
+      "sizes": ["36-40", "41-45"],
+      "description": "Классические носки",
+      "dateAdded": "2024-03-03"
+    }
+  ],
+  "categories": {
+    "gender": ["мужское", "женское"],
+    "type": ["футболки", "рубашки", "штаны", "верхняя", "аксессуары"],
+    "sizes": {
+      "clothes": ["XS", "S", "M", "L", "XL"],
+      "pants": ["28", "30", "32", "34", "36"],
+      "accessories": ["ONE SIZE", "36-40", "41-45"]
+    }
+  },
+  "filters": {
+    "priceRanges": [
+      {"name": "до 5000", "min": 0, "max": 5000},
+      {"name": "5000-10000", "min": 5000, "max": 10000},
+      {"name": "10000-15000", "min": 10000, "max": 15000},
+      {"name": "от 15000", "min": 15000, "max": null}
+    ],
+    "sortOptions": [
+      {"value": "date", "label": "дате"},
+      {"value": "price-asc", "label": "возрастанию цены"},
+      {"value": "price-desc", "label": "убыванию цены"}
+    ]
+  }
+}

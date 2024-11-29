@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин одежды</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="main-page">
+    <!-- Шапка сайта -->
+    <header class="header" style="padding-top: 5px;">
+        <div class="container">
+            <div class="logo" style="position: relative;">
+                <img src="sources/logo.png" alt="Логотип" id="logoImg" style="display: block; margin: 0 auto; margin-bottom: 10px; width: 250px">
+                <div id="desktopCart" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+                    <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+            </div>
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+            <nav class="nav">
+                <ul style="display: flex; justify-content: space-between; margin: 0 auto; padding: 2px 0; width: var(--logo-width);">
+                    <li><a href="catalogue.html">каталог</a></li>
+                    <li><a href="about.html">о нас</a></li>
+                </ul>
+            </nav>
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Каталог -->
+        <section class="catalog">
+            <div class="container">
+                <!-- Футболки -->
+                <div class="category">
+                    <div style="position: relative;">
+                        <p style="text-align: left; margin: 0; margin-left: calc(40% - 230px);">Футболки</p>
+                    </div>
+                    <div class="carousel-container">
+                        <button class="carousel-btn prev" onclick="moveCarousel(-1, 'tshirts-carousel')">‹</button>
+                        <div>
+                            <div class="products-grid carousel" id="tshirts-carousel">
+                                <!-- Здесь будут товары из JSON -->
+                            </div>
+                        </div>
+                        <button class="carousel-btn next" onclick="moveCarousel(1, 'tshirts-carousel')">›</button>
+                    </div>
+                    <hr style="border: none; height: 1px; background-color: #ddd; margin: 40px 0 10px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+                </div>
+
+                <!-- Рубашки -->
+                <div class="category">
+                    <div style="position: relative;">
+                        <p style="text-align: left; margin: 0; margin-left: calc(40% - 230px);">Рубашки</p>
+                    </div>
+                    <div class="carousel-container">
+                        <button class="carousel-btn prev" onclick="moveCarousel(-1, 'shirts-carousel')">‹</button>
+                        <div>
+                            <div class="products-grid carousel" id="shirts-carousel">
+                                <!-- Здесь будут товары из JSON -->
+                            </div>
+                        </div>
+                        <button class="carousel-btn next" onclick="moveCarousel(1, 'shirts-carousel')">›</button>
+                    </div>
+                    <hr style="border: none; height: 1px; background-color: #ddd; margin: 40px 0 10px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+                </div>
+
+                <!-- Аксессуары -->
+                <div class="category">
+                    <div style="position: relative;">
+                        <p style="text-align: left; margin: 0; margin-left: calc(40% - 230px);">Аксессуары</p>
+                    </div>
+                    <div class="carousel-container">
+                        <button class="carousel-btn prev" onclick="moveCarousel(-1, 'accessories-carousel')">‹</button>
+                        <div>
+                            <div class="products-grid carousel" id="accessories-carousel">
+                                <!-- Здесь будут товары из JSON -->
+                            </div>
+                        </div>
+                        <button class="carousel-btn next" onclick="moveCarousel(1, 'accessories-carousel')">›</button>
+                    </div>
+                    <hr style="border: none; height: 1px; background-color: #ddd; margin: 20px 0 10px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+                </div>
+
+                <div class="view-all">
+                    <a href="catalogue.html">весь ассортимент</a>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            // Глобальные переменные - должны быть объявлены в самом начале скрипта
+            let selectedSize = null;
+            let currentQuantity = 1;
+            let cartItems = [];
+            let isCartDrawerOpen = false;
+            let products = [];
+            let selectedPaymentMethod = 'card';
+            let isProcessing = false;
+            
+            // Функции для работы с localStorage
+            function saveCartToLocalStorage() {
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+
+            function loadCartFromLocalStorage() {
+                const savedCart = localStorage.getItem('cartItems');
+                if (savedCart) {
+                    cartItems = JSON.parse(savedCart);
+                    updateCartCount();
+                    updateCartDrawer();
+                }
+            }
+
+            // Загрузка корзины должна происходить до загрузки товаров
+            window.addEventListener('load', async function() {
+                loadCartFromLocalStorage(); // Сначала загружаем корзину
+                
+                const logo = document.getElementById('logoImg');
+                document.documentElement.style.setProperty('--logo-width', logo.offsetWidth + 'px');
+                
+                try {
+                    const response = await fetch('products.json');
+                    const data = await response.json();
+                    products = data.products;
+                    updateCarousels();
+                } catch (error) {
+                    console.error('Ошибка загрузки товаров:', error);
+                }
+            });
+
+            function updateCarousels() {
+                console.log('Все товары:', products);
+                
+                // Получаем товары по категориям
+                const tshirts = products.filter(p => p.categories.includes('футболки'));
+                const shirts = products.filter(p => p.categories.includes('рубашки'));
+                const accessories = products.filter(p => p.categories.includes('аксессуары'));
+                
+                // Добавим отладочную информацию
+                console.log('Категории товаров:');
+                products.forEach(p => console.log(p.categories));
+                
+                console.log('Футболки:', tshirts.length, tshirts);
+                console.log('Рубашки:', shirts.length, shirts);
+                console.log('Аксессуары:', accessories.length, accessories);
+
+                // Безопасное обновление каруселей
+                try {
+                    if (document.getElementById('tshirts-carousel')) {
+                        updateCarousel('tshirts-carousel', tshirts.slice(0, 6));
+                    }
+                    if (document.getElementById('shirts-carousel')) {
+                        updateCarousel('shirts-carousel', shirts.slice(0, 6));
+                    }
+                    if (document.getElementById('accessories-carousel')) {
+                        updateCarousel('accessories-carousel', accessories.slice(0, 6));
+                    }
+                } catch (error) {
+                    console.error('Ошибка при обновлении каруселей:', error);
+                }
+            }
+
+            // Объект для хранения пзиций каруселей
+            const carouselPositions = {
+                'tshirts-carousel': 0,
+                'shirts-carousel': 0,
+                'accessories-carousel': 0
+            };
+
+            function moveCarousel(direction, carouselId) {
+                const carousel = document.getElementById(carouselId);
+                if (!carousel) return;
+                
+                const itemWidth = 261.78;
+                const itemsPerView = 3;
+                const totalItems = carousel.children.length;
+                const originalItems = totalItems / 2;
+                
+                if (totalItems <= itemsPerView) return;
+
+                if (carousel.dataset.animating === 'true') return;
+                carousel.dataset.animating = 'true';
+
+                const container = carousel.closest('.carousel-container');
+                const prevBtn = container.querySelector('.prev');
+                const nextBtn = container.querySelector('.next');
+
+                if (direction > 0) {
+                    carouselPositions[carouselId]++;
+                    prevBtn.style.display = 'flex';
+                    
+                    carousel.style.transition = 'transform 1.2s ease';
+                    carousel.style.transform = `translateX(-${carouselPositions[carouselId] * itemWidth}px)`;
+
+                    if (carouselPositions[carouselId] >= originalItems) {
+                        setTimeout(() => {
+                            carouselPositions[carouselId] = 0;
+                            carousel.style.transition = 'none';
+                            carousel.style.transform = `translateX(0)`;
+                            carousel.dataset.animating = 'false';
+                            prevBtn.style.display = 'none';
+                        }, 1200);
+                    } else {
+                        setTimeout(() => {
+                            carousel.dataset.animating = 'false';
+                        }, 1200);
+                    }
+                } else {
+                    carouselPositions[carouselId]--;
+                    carousel.style.transition = 'transform 1.2s ease';
+                    carousel.style.transform = `translateX(-${carouselPositions[carouselId] * itemWidth}px)`;
+
+                    if (carouselPositions[carouselId] < 0) {
+                        setTimeout(() => {
+                            carouselPositions[carouselId] = originalItems - 1;
+                            carousel.style.transition = 'none';
+                            carousel.style.transform = `translateX(-${carouselPositions[carouselId] * itemWidth}px)`;
+                            carousel.dataset.animating = 'false';
+                        }, 1200);
+                    } else {
+                        setTimeout(() => {
+                            carousel.dataset.animating = 'false';
+                            if (carouselPositions[carouselId] === 0) {
+                                prevBtn.style.display = 'none';
+                            }
+                        }, 1200);
+                    }
+                }
+            }
+
+            function updateCarousel(carouselId, items) {
+                const carousel = document.getElementById(carouselId);
+                if (!carousel) return;
+                
+                carousel.innerHTML = '';
+                const itemsPerView = 3;
+                
+                const createItems = (items) => {
+                    items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.style.width = '240px';
+                        div.style.padding = '0';
+                        div.style.margin = '0 10px';
+                        
+                        const imagePath = item.image;
+                        
+                        div.innerHTML = `
+                            <div style="width: 240px; height: 240px; border: 1px solid #ddd; margin-bottom: 10px; position: relative; cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; background-color: #f7f7f7;"
+                                onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'" 
+                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                                onclick="showProductModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                                <img src="${imagePath}" alt="${item.name}" 
+                                    style="width: 100%; height: 100%; object-fit: contain; padding: 10px; box-sizing: border-box;">
+                            </div>
+                            <div class="product-info" style="text-align: left; padding: 0 5px;">
+                                ${item.oldPrice ? `<div class="old-price" style="color: #999; text-decoration: line-through; font-size: 12px;">${item.oldPrice} KZT</div>` : ''}
+                                <div class="price" style="font-size: 14px; font-weight: 500;">${item.price} KZT</div>
+                            </div>
+                        `;
+                        
+                        carousel.appendChild(div);
+                    });
+                };
+
+                createItems(items);
+                if (items.length > itemsPerView) {
+                    createItems(items);
+                }
+            }
+
+            // Обновляем отображение корзины при изменении размера экрана
+            function updateCartDisplay() {
+                const isMobile = window.innerWidth <= 768;
+                const desktopCart = document.getElementById('desktopCart');
+                const mobileCart = document.getElementById('mobileCart');
+                
+                desktopCart.style.display = isMobile ? 'none' : 'block';
+                mobileCart.style.display = isMobile ? 'block' : 'none';
+            }
+
+            // Обновляем счетчик корзины
+            function updateCartCount(count) {
+                document.getElementById('cartCount').textContent = count;
+                document.getElementById('mobileCartCount').textContent = count;
+            }
+
+            // Добавляем в сущестующие обработчики
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCartDisplay();
+                window.addEventListener('resize', updateCartDisplay);
+            });
+
+            // обавляем обработчик для мобильной корзины
+            document.getElementById('mobileCart').addEventListener('click', toggleCart);
+
+            // Обработчики для модального окна
+            document.getElementById('productModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeProductModal();
+                }
+            });
+            
+            // Обработчики для корзины
+            document.addEventListener('mousedown', function(event) {
+                const cartDrawer = document.getElementById('cartDrawer');
+                const cartIcon = document.querySelector('img[alt="Корзина"]');
+                
+                if (isCartDrawerOpen && 
+                    !cartDrawer.contains(event.target) && 
+                    !cartIcon.contains(event.target)) {
+                    isCartDrawerOpen = false;
+                    cartDrawer.style.right = '-400px';
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            document.getElementById('cartDrawer').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+            
+            document.querySelector('img[alt="Корзина"]').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // Функция перключения корзины
+            function toggleCart(event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+                const drawer = document.getElementById('cartDrawer');
+                isCartDrawerOpen = !isCartDrawerOpen;
+                drawer.style.right = isCartDrawerOpen ? '0' : '-400px';
+                document.body.style.overflow = isCartDrawerOpen ? 'hidden' : '';
+            }
+
+            // Функция обновления счетчика корзины
+            function updateCartCount() {
+                const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cartCount').textContent = count;
+            }
+
+            // Функция обновления содержимого корзины
+            function updateCartDrawer() {
+                const cartDrawerItems = document.getElementById('cartDrawerItems');
+                cartDrawerItems.innerHTML = '';
+                
+                let cartTotal = 0;
+                
+                cartItems.forEach((item, index) => {
+                    cartTotal += item.price * item.quantity;
+                    const itemElement = document.createElement('div');
+                    itemElement.style.marginBottom = '20px';
+                    itemElement.style.paddingBottom = '20px';
+                    itemElement.style.borderBottom = '1px solid #eee';
+                    
+                    itemElement.innerHTML = `
+                        <div style="display: flex; gap: 15px;">
+                            <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>${item.name}</div>
+                                    <div>${item.price * item.quantity} KZT</div>
+                                </div>
+                                <div style="color: #666; font-size: 14px; margin: 5px 0;">
+                                    Размер: ${item.selectedSize}
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                    <button onclick="updateCartItemQuantity(${index}, -1)" style="width: 20px; height: 20px; border: 1px solid #ddd; background: none; cursor: pointer;">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button onclick="updateCartItemQuantity(${index}, 1)" style="width: 20px; height: 20px; border: 1px solid #ddd; background: none; cursor: pointer;">+</button>
+                                    <button onclick="removeFromCart(${index})" style="margin-left: auto; border: none; background: none; color: #999; cursor: pointer;">
+                                        Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    cartDrawerItems.appendChild(itemElement);
+                });
+                
+                document.getElementById('cartDrawerTotal').textContent = `${cartTotal} KZT`;
+                saveCartToLocalStorage();
+            }
+
+            // Добавляем функции для работы с корзиной
+            function updateCartItemQuantity(index, change) {
+                cartItems[index].quantity += change;
+                
+                if (cartItems[index].quantity <= 0) {
+                    cartItems.splice(index, 1);
+                }
+                
+                updateCartCount();
+                updateCartDrawer();
+                saveCartToLocalStorage();
+            }
+
+            function removeFromCart(index) {
+                cartItems.splice(index, 1);
+                updateCartCount();
+                updateCartDrawer();
+                saveCartToLocalStorage();
+            }
+
+            function addToCart(product) {
+                const existingItem = cartItems.find(item => 
+                    item.name === product.name && 
+                    item.selectedSize === product.selectedSize
+                );
+
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cartItems.push({
+                        ...product,
+                        quantity: 1,
+                        selectedSize: product.selectedSize || 'Универсальный'
+                    });
+                }
+
+                updateCartCount();
+                updateCartDrawer();
+                toggleCart();
+            }
+
+            // Функция оформления заказа
+            function checkout() {
+                if (cartItems.length === 0) {
+                    showNotification('Корзина пуста', 'warning');
+                    return;
+                }
+
+                const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                
+                const checkoutModal = document.createElement('div');
+                checkoutModal.id = 'checkoutModal';
+                checkoutModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;';
+                
+                checkoutModal.innerHTML = `
+                    <div style="background: white; width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; position: relative;">
+                        <button onclick="closeCheckoutModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+                        
+                        <h2 style="margin: 0 0 20px;">Оформление заказа</h2>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <div style="font-weight: 500; margin-bottom: 15px;">Выберите способ оплаты:</div>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="radio" name="payment" value="card" checked onchange="selectPaymentMethod(this, 'card')" style="margin: 0 12px 0 0;">
+                                    <div style="flex-grow: 1;">
+                                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                            <span style="font-weight: 500;">Банковской картой</span>
+                                        </div>
+                                        <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                            <img src="sources/payment/visa.png" alt="Visa" style="height: 20px; object-fit: contain;">
+                                            <img src="sources/payment/mastercard.png" alt="Mastercard" style="height: 20px; object-fit: contain;">
+                                            <img src="sources/payment/mir.png" alt="MIR" style="height: 20px; object-fit: contain;">
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="radio" name="payment" value="kaspi" onchange="selectPaymentMethod(this, 'kaspi')" style="margin: 0 12px 0 0;">
+                                    <div style="flex-grow: 1;">
+                                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                            <span style="font-weight: 500;">Kaspi Pay</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; margin-top: 8px;">
+                                            <img src="sources/payment/kaspi-full.png" alt="Kaspi" style="height: 20px; object-fit: contain;">
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <input type="text" id="customerName" placeholder="Имя" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            <input type="tel" id="customerPhone" placeholder="Телефон" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                            <input type="text" id="customerAddress" placeholder="Адрес доставки" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                        </div>
+
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f7f7f7; border-radius: 6px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Товары (${cartItems.length}):</span>
+                                <span>${total} KZT</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>Доставка:</span>
+                                <span>1500 KZT</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 500; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                <span>Итого:</span>
+                                <span>${total + 1500} KZT</span>
+                            </div>
+                        </div>
+
+                        <button onclick="processPayment()" 
+                            style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <span id="paymentButtonText">Оплатить</span>
+                            <div id="paymentSpinner"></div>
+                        </button>
+                    </div>
+                `;
+                
+                document.body.appendChild(checkoutModal);
+            }
+
+            function closeCheckoutModal() {
+                const modal = document.getElementById('checkoutModal');
+                if (modal) {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                }
+            }
+
+            function selectPaymentMethod(input, method) {
+                selectedPaymentMethod = method;
+            }
+
+            function processPayment() {
+                const spinner = document.getElementById('paymentSpinner');
+                const buttonText = document.getElementById('paymentButtonText');
+                
+                if (spinner && buttonText) {
+                    spinner.style.display = 'block';
+                    let dots = '';
+                    let dotsInterval = setInterval(() => {
+                        dots = dots.length >= 3 ? '' : dots + '.';
+                        buttonText.textContent = 'Обработка платежа' + dots;
+                    }, 500);
+                    
+                    setTimeout(() => {
+                        clearInterval(dotsInterval);
+                        spinner.style.display = 'none';
+                        buttonText.textContent = 'Оплатить';
+                        
+                        cartItems = [];
+                        saveCartToLocalStorage();
+                        updateCartCount();
+                        updateCartDrawer();
+                        
+                        closeCheckoutModal();
+                        
+                        showNotification('Заказ успешно оплачен!', 'success');
+                    }, 2000);
+                }
+            }
+
+            // Функция закрытия модального окна оформления заказа
+            function closeCheckoutModal() {
+                const modal = document.getElementById('checkoutModal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+
+            // Функции для работы с модальным окном
+            function showProductModal(product) {
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('productModalContent');
+                
+                // Сбрасываем значения при открытии нового модального окна
+                selectedSize = null;
+                currentQuantity = 1;
+                
+                modalContent.innerHTML = `
+                    <div style="display: flex; gap: 30px;">
+                        <div style="flex: 1;">
+                            <img src="${product.image}" alt="${product.name}" style="width: 100%; height: auto; object-fit: contain;">
+                        </div>
+                        <div style="flex: 1;">
+                            <h2 style="margin: 0 0 10px;">${product.name}</h2>
+                            <div style="margin-bottom: 20px;">
+                                ${product.oldPrice ? 
+                                    `<span style="text-decoration: line-through; color: #999; margin-right: 10px;">${product.oldPrice} KZT</span>` 
+                                    : ''}
+                                <span style="font-size: 24px; font-weight: 500;">${product.price} KZT</span>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <p style="color: #666; line-height: 1.6;">${product.description || 'Описание товара отсутствует.'}</p>
+                            </div>
+                            <div style="margin: 25px 0;">
+                                <div style="margin-bottom: 10px;">Размер:</div>
+                                <div style="display: flex; gap: 10px;">
+                                    ${product.sizes.map(size => 
+                                        `<button onclick="selectSize(this, '${size}')" 
+                                            style="padding: 10px 15px; border: 1px solid #ddd; background: white; cursor: pointer;">
+                                            ${size}
+                                        </button>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <div style="margin-bottom: 10px;">Количество:</div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <button onclick="changeQuantity(-1)" style="width: 30px; height: 30px; border: 1px solid #ddd; background: white; cursor: pointer;">-</button>
+                                    <span id="quantityDisplay">1</span>
+                                    <button onclick="changeQuantity(1)" style="width: 30px; height: 30px; border: 1px solid #ddd; background: white; cursor: pointer;">+</button>
+                                </div>
+                            </div>
+                            <button onclick="addToCartFromModal(${JSON.stringify(product).replace(/"/g, '&quot;')})" 
+                                style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; margin-bottom: 10px; transition: opacity 0.3s;"
+                                onmouseover="this.style.opacity=0.8" 
+                                onmouseout="this.style.opacity=1">
+                                Добавить в корзину
+                            </button>
+                            <button onclick="buyNow(${JSON.stringify(product).replace(/"/g, '&quot;')})" 
+                                style="width: 100%; padding: 15px; background: white; color: black; border: 2px solid black; cursor: pointer; font-size: 16px; transition: all 0.3s;"
+                                onmouseover="this.style.background='black'; this.style.color='white'" 
+                                onmouseout="this.style.background='white'; this.style.color='black'">
+                                Купить сейчас
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Вспомогательные функции для работы с модальным окном
+            function selectSize(button, size) {
+                const buttons = button.parentElement.getElementsByTagName('button');
+                Array.from(buttons).forEach(btn => {
+                    btn.style.background = 'white';
+                    btn.style.color = 'black';
+                });
+                
+                button.style.background = 'black';
+                button.style.color = 'white';
+                selectedSize = size;
+            }
+
+            function changeQuantity(delta) {
+                currentQuantity = Math.max(1, currentQuantity + delta);
+                document.getElementById('quantityDisplay').textContent = currentQuantity;
+            }
+
+            function addToCartFromModal(product) {
+                if (!selectedSize) {
+                    showNotification('Пожалуйста, выберите размер', 'warning');
+                    return;
+                }
+                
+                const productWithOptions = {
+                    ...product,
+                    selectedSize,
+                    quantity: currentQuantity
+                };
+                
+                const existingItem = cartItems.find(item => 
+                    item.name === productWithOptions.name && 
+                    item.selectedSize === productWithOptions.selectedSize
+                );
+
+                if (existingItem) {
+                    existingItem.quantity += currentQuantity;
+                } else {
+                    cartItems.push(productWithOptions);
+                }
+
+                updateCartCount();
+                updateCartDrawer();
+                saveCartToLocalStorage();
+                closeProductModal();
+                showNotification('Товар добавлен в корзину', 'success');
+            }
+
+            function buyNow(product) {
+                if (!selectedSize) {
+                    showNotification('Пожалуйста, выберите размер', 'warning');
+                    return;
+                }
+                
+                const productWithOptions = {
+                    ...product,
+                    selectedSize,
+                    quantity: currentQuantity
+                };
+                
+                cartItems = [productWithOptions];
+                updateCartDrawer();
+                updateCartCount();
+                
+                closeProductModal();
+                checkout();
+            }
+
+            function closeProductModal() {
+                document.getElementById('productModal').style.display = 'none';
+                document.body.style.overflow = '';
+                selectedSize = null;
+                currentQuantity = 1;
+            }
+
+            // Функция показа уведомлений
+            function showNotification(message, type = 'info') {
+                const styles = {
+                    error: {
+                        background: '#FFF2F2',
+                        color: '#DC2626',
+                        border: '#FCA5A5',
+                        icon: '✕'
+                    },
+                    success: {
+                        background: '#F0FDF4',
+                        color: '#16A34A',
+                        border: '#86EFAC',
+                        icon: ''
+                    },
+                    info: {
+                        background: '#EFF6FF',
+                        color: '#2563EB',
+                        border: '#93C5FD',
+                        icon: 'i'
+                    },
+                    warning: {
+                        background: '#FFFBEB',
+                        color: '#D97706',
+                        border: '#FCD34D',
+                        icon: '!'
+                    }
+                };
+
+                const style = styles[type];
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: ${style.background};
+                        color: ${style.color};
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        border: 1px solid ${style.border};
+                        z-index: 2001;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        font-size: 14px;
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                        white-space: nowrap;
+                    ">
+                        <div style="
+                            width: 18px;
+                            height: 18px;
+                            border-radius: 50%;
+                            background: ${style.color};
+                            color: ${style.background};
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 12px;
+                            font-weight: bold;
+                        ">${style.icon}</div>
+                        ${message}
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                const notificationElement = notification.firstElementChild;
+                
+                setTimeout(() => {
+                    notificationElement.style.opacity = '1';
+                    notificationElement.style.transform = 'translateX(-50%) translateY(0)';
+                }, 100);
+
+                setTimeout(() => {
+                    notificationElement.style.opacity = '0';
+                    notificationElement.style.transform = 'translateX(-50%) translateY(20px)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        </script>
+    </main>
+
+    <!-- Футер -->
+    <footer class="footer" style="margin-top: 20px;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: repeat(5, 1fr); width: 100%; margin: 0 auto; justify-content: center; gap: 40px;">
+                <div class="footer-section" style="grid-column: 2/3; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>oblivio</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">каталог</a></li>
+                        <li><a href="#" style="font-size: 14px;">о нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 3/4; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>подержка</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">доставка</a></li>
+                        <li><a href="#" style="font-size: 14px;">уход за одеждй</a></li>
+                        <li><a href="#" style="font-size: 14px;">отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 4/5; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>связь</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">telegram</a></li>
+                        <li><a href="#" style="font-size: 14px;">instagram</a></li>
+                        <li><a href="#" style="font-size: 14px;">tiktok</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное кно товара -->
+    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="position: relative; background: white; max-width: 800px; width: 90%; margin: 30px auto; padding: 30px; border-radius: 12px; max-height: 90vh; overflow-y: auto;">
+            <button onclick="closeProductModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 32px; cursor: pointer; color: #666;">×</button>
+            <div id="productModalContent" style="margin-top: 10px;">
+                <!-- Контент будет добавлен динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Выдвижное меню корзины -->
+    <div id="cartDrawer" style="position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 1001; display: flex; flex-direction: column;">
+        <div style="padding: 20px; border-bottom: 1px solid #eee;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">Корзина</h3>
+                <button onclick="toggleCart(event)" style="border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+        </div>
+        
+        <div id="cartDrawerItems" style="flex: 1; overflow-y: auto; padding: 20px;">
+            <!-- Товары корзины будут добавлены динамически -->
+        </div>
+        
+        <div style="padding: 20px; border-top: 1px solid #eee; background: white;">
+            <div style="margin-bottom: 10px;">
+                <strong>Итого: </strong><span id="cartDrawerTotal">0 KZT</span>
+            </div>
+            <button onclick="checkout()" style="width: 100%; padding: 10px; background: black; color: white; border: none; cursor: pointer;">
+                Оформить заказ
+            </button>
+        </div>
+    </div>
+</body>
+</html>

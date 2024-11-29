@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог - Магазин одежды</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="catalogue-styles.css">
+</head>
+<body class="catalogue-page">
+    <!-- Шапка сайта -->
+    <header class="header" style="padding-top: 5px;">
+        <div class="container">
+            <div class="header-top" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; position: relative; height: 60px;">
+                <!-- Бургер меню -->
+                <button id="burgerBtn" class="burger-btn" style="background: none; border: none; padding: 10px; cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 1; display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+
+                <!-- Лого -->
+                <a href="index.html" style="display: inline-block;">
+                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="width: 250px; transition: width 0.3s ease;">
+                </a>
+
+                <!-- Корзина -->
+                <div id="desktopCart" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+                    <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+            </div>
+            
+            <!-- Добавляем навигацию -->
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+            <nav class="nav">
+                <ul style="display: flex; justify-content: space-between; margin: 0 auto; padding: 2px 0; width: var(--logo-width);">
+                    <li><a href="catalogue.html">каталог</a></li>
+                    <li><a href="about.html">о нас</a></li>
+                </ul>
+            </nav>
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+            <script>
+                window.onload = function() {
+                    const logo = document.getElementById('logoImg');
+                    document.documentElement.style.setProperty('--logo-width', logo.offsetWidth + 'px');
+                } </script>
+        </div>
+    </header>
+
+    <!-- Боковое меню -->
+    <div id="sideMenu" style="position: fixed; top: 0; left: -300px; width: 300px; height: 100vh; background: white; z-index: 1001; transition: left 0.3s ease; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <div style="padding: 20px;">
+            <button onclick="toggleMenu()" style="background: none; border: none; font-size: 24px; position: absolute; right: 20px; top: 20px; cursor: pointer;">×</button>
+            <div style="margin-top: 60px;">
+                <!-- Мобильная корзина (показывается только на мобильных) -->
+                <div id="mobileCart" style="display: none; padding: 12px; margin: 5px 0; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px;">
+                        <span>Корзина</span>
+                        <div id="mobileCartCount" style="margin-left: auto; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                    </div>
+                </div>
+                
+                <!-- Категории -->
+                <button onclick="filterProducts(this, 'мужское')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">мужское</button>
+                <button onclick="filterProducts(this, 'женское')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">женское</button>
+                <button onclick="filterProducts(this, 'футболки')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">футболки</button>
+                <button onclick="filterProducts(this, 'рубашки')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">рубашки</button>
+                <button onclick="filterProducts(this, 'аксессуары')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">аксессуары</button>
+                <button onclick="filterProducts(this, 'верхняя')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">верхняя</button>
+                <button onclick="filterProducts(this, 'штаны')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">штаны</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент каталога -->
+    <main>
+        <div class="container">
+            <!-- Фильтры и сортировка -->
+            <div class="filters" style="margin: 0px 0; position: relative;">
+                <div class="filter-options" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                    <button class="mobile-filter-close" onclick="toggleMobileFilters()" style="display: none;">✕</button>
+                    <button onclick="filterProducts(this, 'мужское')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">мужское</button>
+                    <button onclick="filterProducts(this, 'женское')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">женское</button>
+                    <button onclick="filterProducts(this, 'футболки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">футболки</button>
+                    <button onclick="filterProducts(this, 'рубашки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">рубашки</button>
+                    <button onclick="filterProducts(this, 'аксессуары')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">аксессуары</button>
+                    <button onclick="filterProducts(this, 'верхняя')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">верхняя</button>
+                    <button onclick="filterProducts(this, 'штаны')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">штаны</button>
+                </div>
+                <div class="sort-options" style="position: absolute; left: 0; top: 60px; display: flex; flex-direction: column; gap: 10px; margin-right: 20px;">
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <span>нет в наличии:</span>
+                        <button id="hideOutOfStockBtn" onclick="toggleHideOutOfStock()" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer;">спрятать</button>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
+                        <div>сортировка по: <span id="currentSort" style="border-bottom: 1px solid #000; cursor: pointer;">дате</span></div>
+                        <div id="sortMenu" style="display: none; flex-direction: column; gap: 5px; margin-top: 5px;">
+                            <button onclick="setSortBy('date')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">дате</button>
+                            <button onclick="setSortBy('price-asc')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">цене ↑</button>
+                            <button onclick="setSortBy('price-desc')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">цене ↓</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Сетка товаров -->
+            <div id="productsGrid" class="products-grid" style="display: grid; grid-template-columns: repeat(auto-fit, 240px); gap: 30px 20px; margin: 40px auto; max-width: 960px; justify-content: center; border: none;">
+                <!-- Товары будут добавлены через JavaScript -->
+            </div>
+
+            <!-- Пагинация -->
+            <div class="pagination" style="text-align: center; margin: 40px 0; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                <button onclick="changePage(-1)" style="padding: 5px 10px; border: 1px solid #ddd; background: transparent; cursor: pointer;">❮</button>
+                <span id="paginationText">1\1</span>
+                <button onclick="changePage(1)" style="padding: 5px 10px; border: 1px solid #ddd; background: transparent; cursor: pointer;">❯</button>
+            </div>
+        </div>
+
+        <script>
+            let products = [];
+            let filteredProducts = [];
+            let activeFilters = new Set();
+            let hideOutOfStock = false;
+            let currentSort = 'date';
+            let currentPage = 1;
+            const productsPerPage = 9;
+            let isCartDrawerOpen = false;
+            let selectedSize = null;
+            let currentQuantity = 1;
+            let cartItems = [];
+            let cartTotal = 0;
+            let isProcessing = false;
+
+            // Функции для работы с localStorage
+            function saveCartToLocalStorage() {
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+
+            function loadCartFromLocalStorage() {
+                const savedCart = localStorage.getItem('cartItems');
+                if (savedCart) {
+                    cartItems = JSON.parse(savedCart);
+                    updateCartCount();
+                    updateCartDrawer();
+                }
+            }
+
+            // Загрузка товаров и корзины при загрузке страницы
+            window.addEventListener('load', async function() {
+                loadCartFromLocalStorage(); // Сначала загружаем корзину
+                
+                try {
+                    const response = await fetch('products.json');
+                    const data = await response.json();
+                    products = data.products;
+                    applyFiltersAndSort();
+                } catch (error) {
+                    console.error('Ошибка загрузки товаров:', error);
+                }
+            });
+
+            function toggleHideOutOfStock() {
+                hideOutOfStock = !hideOutOfStock;
+                updateHideOutOfStockButton();
+                applyFiltersAndSort();
+            }
+
+            function updateHideOutOfStockButton() {
+                const button = document.getElementById('hideOutOfStockBtn');
+                if (hideOutOfStock) {
+                    button.style.backgroundColor = '#f0f0f0';
+                } else {
+                    button.style.backgroundColor = 'transparent';
+                }
+            }
+
+            function filterProducts(button, category) {
+                // Получаем все кнопки фильтров
+                const allFilterButtons = document.querySelectorAll('button[onclick*="filterProducts"]');
+                
+                // Проверяем, была ли уже активна эта категория
+                if (activeFilters.has(category)) {
+                    // Если да - очищаем фильтр и убираем подсветку
+                    activeFilters.clear();
+                    allFilterButtons.forEach(btn => {
+                        btn.style.backgroundColor = 'transparent';
+                    });
+                } else {
+                    // Есл нет - очищаем предыдущие фильтры и активируем новый
+                    activeFilters.clear();
+                    allFilterButtons.forEach(btn => {
+                        btn.style.backgroundColor = 'transparent';
+                    });
+                    activeFilters.add(category);
+                    button.style.backgroundColor = '#f0f0f0';
+                }
+                
+                currentPage = 1;
+                applyFiltersAndSort();
+                
+                // Закрываем сайдбар на мобильных после применения фильтра
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            }
+
+            function toggleSortMenu() {
+                const menu = document.getElementById('sortMenu');
+                menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+            }
+
+            function setSortBy(sortType) {
+                currentSort = sortType;
+                document.getElementById('currentSort').textContent = getSortLabel(sortType);
+                document.getElementById('sortMenu').style.display = 'none';
+                applyFiltersAndSort();
+            }
+
+            function getSortLabel(sortType) {
+                switch (sortType) {
+                    case 'date': return 'дате';
+                    case 'price-asc': return 'цене ↑';
+                    case 'price-desc': return 'цене ↓';
+                    default: return '';
+                }
+            }
+
+            function changePage(delta) {
+                const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+                currentPage = Math.max(1, Math.min(currentPage + delta, totalPages));
+                updateDisplay();
+            }
+
+            function applyFiltersAndSort() {
+                // Применяем фильтры
+                filteredProducts = products.filter(product => {
+                    // Сачала проверяем стаус наличия
+                    if (hideOutOfStock && !product.inStock) return false;
+                    
+                    // Если нет активных фильтров категорий, показываем все товары
+                    if (activeFilters.size === 0) return true;
+                    
+                    // Иначе проверяем соответствие выбранным категориям
+                    return Array.from(activeFilters).some(filter => 
+                        product.categories.includes(filter)
+                    );
+                });
+
+                // Применяем сортиовку
+                filteredProducts.sort((a, b) => {
+                    switch (currentSort) {
+                        case 'date':
+                            return new Date(b.dateAdded) - new Date(a.dateAdded);
+                        case 'price-asc':
+                            return a.price - b.price;
+                        case 'price-desc':
+                            return b.price - a.price;
+                        default:
+                            return 0;
+                    }
+                });
+
+                // Проверяем, существует ли текущая страица поле фильтации
+                const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+                if (currentPage > totalPages) {
+                    currentPage = Math.max(1, totalPages);
+                }
+
+                updateDisplay();
+            }
+
+            function updateDisplay() {
+                const grid = document.getElementById('productsGrid');
+                grid.innerHTML = '';
+
+                const startIndex = (currentPage - 1) * productsPerPage;
+                const endIndex = startIndex + productsPerPage;
+                const pageProducts = filteredProducts.slice(startIndex, endIndex);
+
+                pageProducts.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.style.border = 'none';
+                    card.style.padding = '0';
+
+                    const isMobile = window.innerWidth <= 768;
+                    const cardWidth = isMobile ? '100%' : '220px';
+
+                    card.innerHTML = `
+                        <div style="width: ${cardWidth}; padding: 0;">
+                            <div class="product-image-container" 
+                                style="width: 240px; 
+                                       height: 240px; 
+                                       border: 1px solid #ddd; 
+                                       display: flex; 
+                                       align-items: center; 
+                                       justify-content: center; 
+                                       background-color: #f7f7f7; 
+                                       cursor: pointer;" 
+                                onclick="showProductModal(${JSON.stringify(product).replace(/"/g, '&quot;')})">
+                                <img class="product-image" 
+                                    src="${product.image}" 
+                                    alt="${product.name}" 
+                                    style="width: 100%; 
+                                           height: 100%; 
+                                           object-fit: contain; 
+                                           padding: 10px;
+                                           box-sizing: border-box;">
+                            </div>
+                            <div class="product-info">
+                                <div style="font-size: ${isMobile ? '14px' : '16px'}">${product.name}</div>
+                                ${product.oldPrice ? 
+                                    `<div style="text-decoration: line-through;">${product.oldPrice} KZT</div>` 
+                                    : ''}
+                                <div class="price">${product.price} KZT</div>
+                                ${!product.inStock ? 
+                                    '<div style="color: red;">Нет в наличии</div>' 
+                                    : ''}
+                                <div style="font-size: ${isMobile ? '12px' : '0.9em'}; color: #666;">Размеры: ${product.sizes.join(', ')}</div>
+                            </div>
+                        </div>
+                    `;
+
+                    grid.appendChild(card);
+                });
+
+                // Обновление пагинации
+                const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+                document.getElementById('paginationText').textContent = `${currentPage}\\${totalPages}`;
+
+                // Обновление видимости кнопок пагинации
+                const prevButton = document.querySelector('.pagination button:first-child');
+                const nextButton = document.querySelector('.pagination button:last-child');
+                prevButton.style.visibility = currentPage === 1 ? 'hidden' : 'visible';
+                nextButton.style.visibility = currentPage === totalPages ? 'hidden' : 'visible';
+            }
+
+            // При загрузке страницы нужно установить начальное состояние кнопки
+            window.addEventListener('load', () => {
+                loadProducts();
+                updateHideOutOfStockButton();
+                document.querySelector('.sort-options').addEventListener('click', (e) => {
+                    if (e.target.id === 'currentSort' || e.target.previousElementSibling?.id === 'currentSort') {
+                        toggleSortMenu();
+                    }
+                });
+            });
+
+            function toggleMobileFilters() {
+                const filterOptions = document.querySelector('.filter-options');
+                filterOptions.classList.toggle('active');
+                
+                // Блокируем прокрутку body когда фильтры открыты
+                document.body.style.overflow = filterOptions.classList.contains('active') ? 'hidden' : '';
+            }
+
+            // Добавляем слушатель изменения размера окна
+            window.addEventListener('resize', () => {
+                updateDisplay();
+            });
+
+            // Добавляем JavaScript для управления меню и корзиной
+            function toggleMenu() {
+                const menu = document.getElementById('sideMenu');
+                const overlay = document.getElementById('overlay');
+                const isOpen = menu.style.left === '0px';
+                
+                menu.style.left = isOpen ? '-300px' : '0';
+                overlay.style.display = isOpen ? 'none' : 'block';
+                document.body.style.overflow = isOpen ? '' : 'hidden';
+            }
+
+            // Обновляем отображение корзины при изменении размера экрана
+            function updateCartDisplay() {
+                const isMobile = window.innerWidth <= 768;
+                const desktopCart = document.getElementById('desktopCart');
+                const mobileCart = document.getElementById('mobileCart');
+                
+                desktopCart.style.display = isMobile ? 'none' : 'block';
+                mobileCart.style.display = isMobile ? 'block' : 'none';
+            }
+
+            // Обновляем счетчик корзины
+            function updateCartCount(count) {
+                document.getElementById('cartCount').textContent = count;
+                document.getElementById('mobileCartCount').textContent = count;
+            }
+
+            // Инициализация при згрузке страницы
+            document.addEventListener('DOMContentLoaded', function() {
+                updateCartDisplay();
+                updateLogoSize();
+                updateBurgerVisibility();
+                window.addEventListener('resize', () => {
+                    updateCartDisplay();
+                    updateLogoSize();
+                    updateBurgerVisibility();
+                });
+                loadCartFromLocalStorage();
+            });
+
+            document.getElementById('burgerBtn').addEventListener('click', toggleMenu);
+            document.getElementById('overlay').addEventListener('click', toggleMenu);
+
+            // Добавляем обработчик для мобильной корзины
+            document.getElementById('mobileCart').addEventListener('click', toggleCart);
+
+            // Добавляем к существующему JavaScript
+            function updateLogoSize() {
+                const logo = document.getElementById('logoImg');
+                const isMobile = window.innerWidth <= 768;
+                logo.style.width = isMobile ? '150px' : '250px';
+            }
+
+            function updateBurgerVisibility() {
+                const burgerBtn = document.getElementById('burgerBtn');
+                burgerBtn.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+            }
+
+            function showProductModal(product) {
+                const modal = document.getElementById('productModal');
+                const modalContent = document.getElementById('productModalContent');
+                
+                // Сбрасываем значения при открытии нового модального окна
+                selectedSize = null;
+                currentQuantity = 1;
+                
+                modalContent.innerHTML = `
+                    <div style="display: flex; gap: 30px;">
+                        <div style="flex: 1;">
+                            <img src="${product.image}" alt="${product.name}" style="width: 100%; height: auto; object-fit: contain;">
+                        </div>
+                        <div style="flex: 1;">
+                            <h2 style="margin: 0 0 10px;">${product.name}</h2>
+                            <div style="margin-bottom: 20px;">
+                                ${product.oldPrice ? 
+                                    `<span style="text-decoration: line-through; color: #999; margin-right: 10px;">${product.oldPrice} KZT</span>` 
+                                    : ''}
+                                <span style="font-size: 24px; font-weight: 500;">${product.price} KZT</span>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <p style="color: #666; line-height: 1.6; font-size: 14px;">
+                                    ${product.description || 'Описание товара отсутствует.'}
+                                    ${product.material ? `<br><br>Материал: ${product.material}` : ''}
+                                    ${product.care ? `<br>Уход: ${product.care}` : ''}
+                                </p>
+                            </div>
+                            <div style="margin: 25px 0;">
+                                <div style="margin-bottom: 10px;">Размер:</div>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    ${product.sizes.map(size => 
+                                        `<button onclick="selectSize(this, '${size}')" 
+                                            style="padding: 10px 15px; border: 1px solid #ddd; background: white; cursor: pointer;">
+                                            ${size}
+                                        </button>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <div style="margin-bottom: 10px;">Кличество:</div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <button onclick="changeQuantity(-1)" style="width: 30px; height: 30px; border: 1px solid #ddd; background: white; cursor: pointer;">-</button>
+                                    <span id="quantityDisplay">1</span>
+                                    <button onclick="changeQuantity(1)" style="width: 30px; height: 30px; border: 1px solid #ddd; background: white; cursor: pointer;">+</button>
+                                </div>
+                            </div>
+                            <button onclick="addToCartFromModal(${JSON.stringify(product).replace(/"/g, '&quot;')})" 
+                                style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; margin-bottom: 10px; transition: opacity 0.3s;"
+                                onmouseover="this.style.opacity=0.8" 
+                                onmouseout="this.style.opacity=1">
+                                Добавить в корзину
+                            </button>
+                            <button onclick="buyNow(${JSON.stringify(product).replace(/"/g, '&quot;')})" 
+                                style="width: 100%; padding: 15px; background: white; color: black; border: 2px solid black; cursor: pointer; font-size: 16px; transition: all 0.3s;"
+                                onmouseover="this.style.background='black'; this.style.color='white'" 
+                                onmouseout="this.style.background='white'; this.style.color='black'">
+                                Купить сейчас
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Добавляем функцию для быстрой покупки
+            function buyNow(product) {
+                if (!selectedSize) {
+                    showNotification('Пожалуйста, выберите размер', 'warning');
+                    return;
+                }
+                
+                const productWithOptions = {
+                    ...product,
+                    selectedSize,
+                    quantity: currentQuantity
+                };
+                
+                // Очищаем корзину и добавляем только этот товар
+                cartItems = [productWithOptions];
+                updateCartDrawer();
+                updateCartCount();
+                
+                // Закрываем модальное окно и переходим к оформлению
+                closeProductModal();
+                checkout();
+            }
+
+            function closeProductModal() {
+                document.getElementById('productModal').style.display = 'none';
+                document.body.style.overflow = '';
+                // Сбрасываем значения при закрытии
+                selectedSize = null;
+                currentQuantity = 1;
+            }
+
+            function toggleCart(event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+                const drawer = document.getElementById('cartDrawer');
+                isCartDrawerOpen = !isCartDrawerOpen;
+                drawer.style.right = isCartDrawerOpen ? '0' : '-400px';
+                document.body.style.overflow = isCartDrawerOpen ? 'hidden' : '';
+            }
+
+            function selectSize(button, size) {
+                // Сбрасываем стили всех кнопок
+                const buttons = button.parentElement.getElementsByTagName('button');
+                Array.from(buttons).forEach(btn => {
+                    btn.style.background = 'white';
+                    btn.style.color = 'black';
+                });
+                
+                // Подсвечиваем выбранную кнопку
+                button.style.background = 'black';
+                button.style.color = 'white';
+                selectedSize = size;
+            }
+
+            function changeQuantity(delta) {
+                currentQuantity = Math.max(1, currentQuantity + delta);
+                document.getElementById('quantityDisplay').textContent = currentQuantity;
+            }
+
+            function addToCartFromModal(product) {
+                if (!selectedSize) {
+                    showNotification('Пожалуйста, выберите размер', 'warning');
+                    return;
+                }
+                
+                const productWithOptions = {
+                    ...product,
+                    selectedSize,
+                    quantity: currentQuantity
+                };
+                
+                addToCart(productWithOptions);
+                closeProductModal();
+            }
+
+            function addToCart(product) {
+                // Проверяем, есть ли уже такой товар с таким же размером в корзине
+                const existingItemIndex = cartItems.findIndex(item => 
+                    item.name === product.name && item.selectedSize === product.selectedSize
+                );
+
+                if (existingItemIndex !== -1) {
+                    // Если товар уже есть, увеличиваем коичество
+                    cartItems[existingItemIndex].quantity += product.quantity;
+                } else {
+                    // Если товара нет, добавляем новый
+                    cartItems.push(product);
+                }
+
+                saveCartToLocalStorage();
+                updateCartCount(cartItems.length);
+                updateCartDrawer();
+            }
+
+            function updateCartCount() {
+                const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cartCount').textContent = totalItems;
+                document.getElementById('mobileCartCount').textContent = totalItems;
+            }
+
+            function updateCartDrawer() {
+                const cartDrawerItems = document.getElementById('cartDrawerItems');
+                cartDrawerItems.innerHTML = '';
+                cartTotal = 0;
+
+                cartItems.forEach((item, index) => {
+                    cartTotal += item.price * item.quantity;
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.style.cssText = `
+                        display: flex;
+                        padding: 15px 0;
+                        border-bottom: 1px solid #eee;
+                        gap: 15px;
+                    `;
+                    
+                    itemElement.innerHTML = `
+                        <div style="width: 80px; height: 80px; background: #f7f7f7; border: 1px solid #ddd; flex-shrink: 0;">
+                            <img src="${item.image}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: contain; padding: 5px; box-sizing: border-box;">
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <div style="font-weight: 500; margin-bottom: 5px;">${item.name}</div>
+                            <div style="color: #666; font-size: 14px; margin-bottom: 5px;">Размер: ${item.selectedSize}</div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <button onclick="updateCartItemQuantity(${index}, -1)" 
+                                    style="width: 24px; height: 24px; border: 1px solid #ddd; background: white; cursor: pointer; font-size: 16px;">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateCartItemQuantity(${index}, 1)" 
+                                    style="width: 24px; height: 24px; border: 1px solid #ddd; background: white; cursor: pointer; font-size: 16px;">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 500;">${item.price * item.quantity} KZT</div>
+                            <button onclick="removeFromCart(${index})" 
+                                style="border: none; background: none; color: #999; font-size: 12px; cursor: pointer; margin-top: 5px;">
+                                Удалить
+                            </button>
+                        </div>
+                    `;
+                    
+                    cartDrawerItems.appendChild(itemElement);
+                });
+
+                document.getElementById('cartDrawerTotal').textContent = `${cartTotal} KZT`;
+                saveCartToLocalStorage();
+            }
+
+            function updateCartItemQuantity(index, change) {
+                cartItems[index].quantity += change;
+                
+                if (cartItems[index].quantity <= 0) {
+                    cartItems.splice(index, 1);
+                }
+                
+                updateCartCount();
+                updateCartDrawer();
+                saveCartToLocalStorage();
+            }
+
+            function removeFromCart(index) {
+                cartItems.splice(index, 1);
+                updateCartCount();
+                updateCartDrawer();
+                saveCartToLocalStorage();
+            }
+
+            function checkout() {
+                if (cartItems.length === 0) {
+                    showNotification('Корзина пуста', 'warning');
+                    return;
+                }
+
+                const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                const checkoutModal = document.createElement('div');
+                checkoutModal.id = 'checkoutModal';
+                checkoutModal.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+                        <div style="background: white; width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; position: relative;">
+                            <button onclick="closeCheckoutModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+                            
+                            <h2 style="margin: 0 0 20px;">Оформление заказа</h2>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-weight: 500; margin-bottom: 15px;">Выберите способ оплаты:</div>
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                        <input type="radio" name="payment" value="card" checked onchange="selectPaymentMethod(this, 'card')" style="margin: 0 12px 0 0;">
+                                        <div style="flex-grow: 1;">
+                                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                                <span style="font-weight: 500;">Банковской картой</span>
+                                            </div>
+                                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                                <img src="sources/payment/visa.png" alt="Visa" style="height: 20px; object-fit: contain;">
+                                                <img src="sources/payment/mastercard.png" alt="Mastercard" style="height: 20px; object-fit: contain;">
+                                                <img src="sources/payment/mir.png" alt="MIR" style="height: 20px; object-fit: contain;">
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                        <input type="radio" name="payment" value="kaspi" onchange="selectPaymentMethod(this, 'kaspi')" style="margin: 0 12px 0 0;">
+                                        <div style="flex-grow: 1;">
+                                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                                <span style="font-weight: 500;">Kaspi Pay</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; margin-top: 8px;">
+                                                <img src="sources/payment/kaspi-full.png" alt="Kaspi" style="height: 20px; object-fit: contain;">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="customerName" placeholder="Имя" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="tel" id="customerPhone" placeholder="Телефон" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="text" id="customerAddress" placeholder="Адрес доставки" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+
+                            <div style="margin-bottom: 20px; padding: 15px; background: #f7f7f7; border-radius: 6px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>Товары (${cartItems.length}):</span>
+                                    <span>${total} KZT</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>Доставка:</span>
+                                    <span>1500 KZT</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-weight: 500; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                    <span>Итого:</span>
+                                    <span>${total + 1500} KZT</span>
+                                </div>
+                            </div>
+
+                            <button onclick="processPayment()" 
+                                style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <span id="paymentButtonText">Оплатить</span>
+                                <div id="paymentSpinner"></div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(checkoutModal);
+            }
+
+            function selectPaymentMethod(button, method) {
+                document.querySelectorAll('.payment-method').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.style.background = 'white';
+                    btn.style.borderColor = '#ddd';
+                });
+                button.classList.add('active');
+                button.style.background = '#f7f7f7';
+                button.style.borderColor = '#000';
+            }
+
+            async function processPayment() {
+                const buttonText = document.getElementById('paymentButtonText');
+                if (!buttonText || isProcessing) return;
+                
+                isProcessing = true;
+                let dots = '';
+                const dotsInterval = setInterval(() => {
+                    dots = dots.length >= 3 ? '' : dots + '.';
+                    buttonText.textContent = 'Обработка платежа' + dots;
+                }, 500);
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Имитация случайного результата
+                    if (Math.random() > 0.5) {
+                        throw new Error('Ошибка оплаты');
+                    }
+                    
+                    showNotification('Оплата прошла успешно!', 'success');
+                    cartItems = [];
+                    saveCartToLocalStorage();
+                    updateCartCount();
+                    updateCartDrawer();
+                    closeCheckoutModal();
+                    
+                } catch (error) {
+                    showNotification(error.message, 'error');
+                } finally {
+                    clearInterval(dotsInterval);
+                    isProcessing = false;
+                    buttonText.textContent = 'Оплатить';
+                }
+            }
+
+            function closeCheckoutModal() {
+                const modal = document.getElementById('checkoutModal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+
+            // Добавляем стили
+            const paymentStyles = document.createElement('style');
+            paymentStyles.textContent = `
+                .payment-option:hover {
+                    border-color: #000 !important;
+                    background: #f8f8f8;
+                }
+
+                .payment-option input[type="radio"]:checked + div {
+                    color: #000;
+                }
+
+                .payment-option input[type="radio"]:checked + div img {
+                    transform: scale(1.1);
+                    transition: transform 0.2s ease;
+                }
+
+                .payment-option:has(input[type="radio"]:checked) {
+                    border-color: #000 !important;
+                    background: #f8f8f8;
+                }
+
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                
+                #paymentSpinner {
+                    display: none;
+                    width: 20px;
+                    height: 20px;
+                    border: 2px solid #fff;
+                    border-top: 2px solid transparent;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+            `;
+            document.head.appendChild(paymentStyles);
+
+            // Добавьте после объявления переменных (примерно строка 187)
+            document.addEventListener('click', function(event) {
+                const cartDrawer = document.getElementById('cartDrawer');
+                const cartIcon = document.querySelector('img[alt="Корзина"]');
+                
+                // Проверяем, открыта ли корзина и был ли клик вне её и не по иконке корзины
+                if (isCartDrawerOpen && 
+                    !cartDrawer.contains(event.target) && 
+                    event.target !== cartIcon) {
+                    isCartDrawerOpen = false;
+                    cartDrawer.style.right = '-400px';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Предотвращаем закрытие при клике внутри корзины
+            document.getElementById('cartDrawer').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // Предотвращаем закрытие при клике по иконке корзины
+            document.querySelector('img[alt="Корзина"]').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            // Добавляем все обработчики событий при зарузке страницы
+            document.addEventListener('DOMContentLoaded', function() {
+                // Обработчик клика по всему документу
+                document.addEventListener('mousedown', function(event) {
+                    const cartDrawer = document.getElementById('cartDrawer');
+                    const cartIcon = document.querySelector('img[alt="Корзина"]');
+                    
+                    // Если клик был не внутри корзины и не по иконке корзины
+                    if (isCartDrawerOpen && 
+                        !cartDrawer.contains(event.target) && 
+                        !cartIcon.contains(event.target)) {
+                        isCartDrawerOpen = false;
+                        cartDrawer.style.right = '-400px';
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Добавляем обработчик клика для модального окна
+            document.getElementById('productModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeProductModal();
+                }
+            });
+
+            // Предотвращаем закрытие при клике внутри контента
+            document.querySelector('#productModal > div').addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            function showNotification(message, type = 'info') {
+                const styles = {
+                    error: {
+                        background: '#FFF2F2',
+                        color: '#DC2626',
+                        border: '#FCA5A5',
+                        icon: '✕'
+                    },
+                    success: {
+                        background: '#F0FDF4',
+                        color: '#16A34A',
+                        border: '#86EFAC',
+                        icon: '✓'
+                    },
+                    info: {
+                        background: '#EFF6FF',
+                        color: '#2563EB',
+                        border: '#93C5FD',
+                        icon: 'i'
+                    },
+                    warning: {
+                        background: '#FFFBEB',
+                        color: '#D97706',
+                        border: '#FCD34D',
+                        icon: '!'
+                    }
+                };
+
+                const style = styles[type];
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        bottom: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: ${style.background};
+                        color: ${style.color};
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        border: 1px solid ${style.border};
+                        z-index: 2001;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        font-size: 14px;
+                        opacity: 0;
+                        transition: all 0.3s ease;
+                        white-space: nowrap;
+                    ">
+                        <div style="
+                            width: 18px;
+                            height: 18px;
+                            border-radius: 50%;
+                            background: ${style.color};
+                            color: ${style.background};
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 12px;
+                            font-weight: bold;
+                        ">${style.icon}</div>
+                        ${message}
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+                const notificationElement = notification.firstElementChild;
+                
+                setTimeout(() => {
+                    notificationElement.style.opacity = '1';
+                    notificationElement.style.transform = 'translateX(-50%) translateY(0)';
+                }, 100);
+
+                setTimeout(() => {
+                    notificationElement.style.opacity = '0';
+                    notificationElement.style.transform = 'translateX(-50%) translateY(20px)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+
+            function processPayment() {
+                closeCheckoutModal();
+                showNotification('Заказ успешно оплачен!', 'success');
+                cartItems = [];
+                saveCartToLocalStorage();
+                updateCartCount(0);
+                updateCartDrawer();
+                
+                // Закрываем drawer корзины
+                const cartDrawer = document.getElementById('cartDrawer');
+                if (cartDrawer) {
+                    cartDrawer.style.right = '-400px';
+                    isCartDrawerOpen = false;
+                }
+            }
+
+            function checkout() {
+                if (cartItems.length === 0) {
+                    showNotification('Корзина пуста', 'warning');
+                    return;
+                }
+
+                const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                const checkoutModal = document.createElement('div');
+                checkoutModal.id = 'checkoutModal';
+                checkoutModal.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+                        <div style="background: white; width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; position: relative;">
+                            <button onclick="closeCheckoutModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+                            
+                            <h2 style="margin: 0 0 20px;">Оформление заказа</h2>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-weight: 500; margin-bottom: 15px;">Выберите способ оплаты:</div>
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                        <input type="radio" name="payment" value="card" checked onchange="selectPaymentMethod(this, 'card')" style="margin: 0 12px 0 0;">
+                                        <div style="flex-grow: 1;">
+                                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                                <span style="font-weight: 500;">Банковской картой</span>
+                                            </div>
+                                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                                <img src="sources/payment/visa.png" alt="Visa" style="height: 20px; object-fit: contain;">
+                                                <img src="sources/payment/mastercard.png" alt="Mastercard" style="height: 20px; object-fit: contain;">
+                                                <img src="sources/payment/mir.png" alt="MIR" style="height: 20px; object-fit: contain;">
+                                            </div>
+                                        </div>
+                                    </label>
+
+                                    <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                        <input type="radio" name="payment" value="kaspi" onchange="selectPaymentMethod(this, 'kaspi')" style="margin: 0 12px 0 0;">
+                                        <div style="flex-grow: 1;">
+                                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                                <span style="font-weight: 500;">Kaspi Pay</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; margin-top: 8px;">
+                                                <img src="sources/payment/kaspi-full.png" alt="Kaspi" style="height: 20px; object-fit: contain;">
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <input type="text" id="customerName" placeholder="Имя" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="tel" id="customerPhone" placeholder="Телефон" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <input type="text" id="customerAddress" placeholder="Адрес доставки" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                            </div>
+
+                            <div style="margin-bottom: 20px; padding: 15px; background: #f7f7f7; border-radius: 6px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>Товары (${cartItems.length}):</span>
+                                    <span>${total} KZT</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <span>Доставка:</span>
+                                    <span>1500 KZT</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-weight: 500; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                    <span>Итого:</span>
+                                    <span>${total + 1500} KZT</span>
+                                </div>
+                            </div>
+
+                            <button onclick="processPayment()" 
+                                style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <span id="paymentButtonText">Оплатить</span>
+                                <div id="paymentSpinner"></div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(checkoutModal);
+            }
+        </script>
+    </main>
+
+    <!-- Футер (такой же как в main.html) -->
+    <footer class="footer" style="margin-top: 20px;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: repeat(5, 1fr); width: 100%; margin: 0 auto; justify-content: center; gap: 40px;">
+                <div class="footer-section" style="grid-column: 2/3; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>oblivio</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">каталог</a></li>
+                        <li><a href="#" style="font-size: 14px;">о нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 3/4; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>поддержка</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">доставка</a></li>
+                        <li><a href="#" style="font-size: 14px;">уход за одеждой</a></li>
+                        <li><a href="#" style="font-size: 14px;">отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 4/5; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>связь</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">telegram</a></li>
+                        <li><a href="#" style="font-size: 14px;">instagram</a></li>
+                        <li><a href="#" style="font-size: 14px;">tiktok</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script>
+        // ... существующие скрипты для корзины и другой функциональности ...
+    </script>
+
+    <!-- Модальное окно товара -->
+    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="position: relative; background: white; max-width: 800px; width: 90%; margin: 30px auto; padding: 30px; border-radius: 12px; max-height: 90vh; overflow-y: auto;">
+            <button onclick="closeProductModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 32px; cursor: pointer; color: #666;">×</button>
+            <div id="productModalContent" style="margin-top: 10px;">
+                <!-- Контент будет добавлен динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Выдвижное меню корзины -->
+    <div id="cartDrawer" style="position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 1001; display: flex; flex-direction: column;">
+        <div style="padding: 20px; border-bottom: 1px solid #eee;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">Корзина</h3>
+                <button onclick="toggleCart(event)" style="border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+        </div>
+        
+        <div id="cartDrawerItems" style="flex: 1; overflow-y: auto; padding: 20px;">
+            <!-- Товары корзины будут добавлены динамически -->
+        </div>
+        
+        <div style="padding: 20px; border-top: 1px solid #eee; background: white;">
+            <div style="margin-bottom: 10px;">
+                <strong>Итого: </strong><span id="cartDrawerTotal">0 KZT</span>
+            </div>
+            <button onclick="checkout()" style="width: 100%; padding: 10px; background: black; color: white; border: none; cursor: pointer;">
+                Оформить заказ
+            </button>
+        </div>
+    </div>
+</body>
+</html>

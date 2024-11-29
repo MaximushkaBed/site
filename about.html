@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас - Магазин одежды</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Шапка сайта (копируем из main.html) -->
+    <header class="header" style="padding-top: 5px;">
+        <div class="container">
+            <div class="header-top" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; position: relative; height: 60px;">
+                <!-- Бургер меню -->
+                <button id="burgerBtn" class="burger-btn" style="background: none; border: none; padding: 10px; cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 1; display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+
+                <!-- Лого -->
+                <a href="index.html" style="display: inline-block;">
+                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="width: 250px; transition: width 0.3s ease;">
+                </a>
+
+                <!-- Корзина -->
+                <div id="desktopCart" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+                    <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+            </div>
+            
+            <!-- Добавляем навигацию -->
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+            <nav class="nav">
+                <ul style="display: flex; justify-content: space-between; margin: 0 auto; padding: 2px 0; width: var(--logo-width);">
+                    <li><a href="catalogue.html">каталог</a></li>
+                    <li><a href="about.html">о нас</a></li>
+                </ul>
+            </nav>
+            <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
+            <script>
+                window.onload = function() {
+                    const logo = document.getElementById('logoImg');
+                    document.documentElement.style.setProperty('--logo-width', logo.offsetWidth + 'px');
+                } </script>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main style="width: 100%; margin: -10px auto 0;">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: repeat(5, 1fr); width: 100%; margin: 0 auto; justify-content: center; gap: 40px;">
+                <div style="grid-column: 2/3; text-align: left;">
+                    <p style="white-space: pre; font-family: monospace; margin-bottom: 40px; font-family: inherit;">
+oblivio - это бренд одежды, 
+существующий с 3 сентября 2007 
+года, до сегодняшних дней.  
+
+Наш бренд стал отражением 
+внутренней борьбы людей, которые 
+устали от серой повседневности и 
+искали способ выразить свою 
+индивидуальность. Мы - молодые 
+дизайнеры, которые всегда 
+чувствовали себя не на своем 
+месте. Вместе мы решили создать 
+свою линию одежды, которая бросала 
+бы вызов стандартам.  
+
+"Каждый из нас носит свои шрамы, 
+но для кого-то важно, как их 
+показывать"</p>
+
+                    <h3 style="margin-bottom: 10px;">связь</h3>
+                    <p style="margin-bottom: 40px;">сотрудничество | cooperation@obl.kz</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Футер (копируем из main.html) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid" style="grid-template-columns: repeat(5, 1fr); width: 100%; margin: 0 auto; justify-content: center; gap: 40px;">
+                <div class="footer-section" style="grid-column: 2/3; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>oblivio</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="catalogue.html" style="font-size: 14px;">каталог</a></li>
+                        <li><a href="about.html" style="font-size: 14px;">о нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 3/4; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>поддержка</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">доставка</a></li>
+                        <li><a href="#" style="font-size: 14px;">уход за одеждой</a></li>
+                        <li><a href="#" style="font-size: 14px;">отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section" style="grid-column: 4/5; text-align: left;">
+                    <h4 style="margin-left: 0; font-size: 16px;"><b>связь</b></h4>
+                    <ul style="padding-left: 0;">
+                        <li><a href="#" style="font-size: 14px;">telegram</a></li>
+                        <li><a href="#" style="font-size: 14px;">instagram</a></li>
+                        <li><a href="#" style="font-size: 14px;">tiktok</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Выдвижное меню корзины -->
+    <div id="cartDrawer" style="position: fixed; top: 0; right: -400px; width: 400px; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.1); transition: right 0.3s ease; z-index: 1001; display: flex; flex-direction: column;">
+        <div style="padding: 20px; border-bottom: 1px solid #eee;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">Корзина</h3>
+                <button onclick="toggleCart(event)" style="border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+        </div>
+        
+        <div id="cartDrawerItems" style="flex: 1; overflow-y: auto; padding: 20px;">
+            <!-- Товары корзины будут добавлены динамически -->
+        </div>
+        
+        <div style="padding: 20px; border-top: 1px solid #eee; background: white;">
+            <div style="margin-bottom: 10px;">
+                <strong>Итого: </strong><span id="cartDrawerTotal">0 KZT</span>
+            </div>
+            <button onclick="checkout()" style="width: 100%; padding: 10px; background: black; color: white; border: none; cursor: pointer;">
+                Оформить заказ
+            </button>
+        </div>
+    </div>
+
+    <!-- Скрипты для работы с корзиной -->
+    <script>
+        // Копируем необходимые функции из main.html
+        let cartItems = [];
+        let isCartDrawerOpen = false;
+
+        // Функции для работы с localStorage
+        function saveCartToLocalStorage() {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function loadCartFromLocalStorage() {
+            const savedCart = localStorage.getItem('cartItems');
+            if (savedCart) {
+                cartItems = JSON.parse(savedCart);
+                updateCartCount();
+                updateCartDrawer();
+            }
+        }
+
+        // Загрузка корзины при загрузке страницы
+        window.addEventListener('load', function() {
+            loadCartFromLocalStorage();
+        });
+
+        // Остальные функции для работы с корзиной (toggleCart, updateCartCount, updateCartDrawer и т.д.)
+        // Копируем из main.html строки 366-857
+
+        // Фуния для переключения корзины
+        function toggleCart(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const drawer = document.getElementById('cartDrawer');
+            isCartDrawerOpen = !isCartDrawerOpen;
+            drawer.style.right = isCartDrawerOpen ? '0' : '-400px';
+            document.body.style.overflow = isCartDrawerOpen ? 'hidden' : '';
+        }
+
+        // Функция обновления счетчика корзины
+        function updateCartCount() {
+            const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Функция обновления содержимого корзины
+        function updateCartDrawer() {
+            const cartDrawerItems = document.getElementById('cartDrawerItems');
+            cartDrawerItems.innerHTML = '';
+            let cartTotal = 0;
+
+            cartItems.forEach((item, index) => {
+                cartTotal += item.price * item.quantity;
+                const itemElement = document.createElement('div');
+                itemElement.style.marginBottom = '20px';
+                itemElement.style.paddingBottom = '20px';
+                itemElement.style.borderBottom = '1px solid #eee';
+                
+                itemElement.innerHTML = `
+                    <div style="display: flex; gap: 15px;">
+                        <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500;">
+                                ${item.name}
+                            </div>
+                            <div style="color: #666; font-size: 14px; margin: 5px 0;">
+                                ${item.price} KZT
+                            </div>
+                            <div style="color: #666; font-size: 14px; margin: 5px 0;">
+                                Размер: ${item.selectedSize}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                <button onclick="updateCartItemQuantity(${index}, -1)" style="width: 20px; height: 20px; border: 1px solid #ddd; background: none; cursor: pointer;">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateCartItemQuantity(${index}, 1)" style="width: 20px; height: 20px; border: 1px solid #ddd; background: none; cursor: pointer;">+</button>
+                                <button onclick="removeFromCart(${index})" style="margin-left: auto; border: none; background: none; color: #999; cursor: pointer;">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                cartDrawerItems.appendChild(itemElement);
+            });
+            
+            document.getElementById('cartDrawerTotal').textContent = `${cartTotal} KZT`;
+        }
+
+        // Функция обновления количества товара в корзине
+        function updateCartItemQuantity(index, change) {
+            cartItems[index].quantity += change;
+            
+            if (cartItems[index].quantity <= 0) {
+                cartItems.splice(index, 1);
+            }
+            
+            updateCartCount();
+            updateCartDrawer();
+            saveCartToLocalStorage();
+        }
+
+        // Функция удаления товара из крзины
+        function removeFromCart(index) {
+            cartItems.splice(index, 1);
+            updateCartCount();
+            updateCartDrawer();
+            saveCartToLocalStorage();
+        }
+
+        // Загрузка корзины при загрузке страницы
+        window.addEventListener('load', function() {
+            loadCartFromLocalStorage();
+        });
+
+        // Обработчик клика вне корзины для её закрытия
+        document.addEventListener('click', function(event) {
+            const cartDrawer = document.getElementById('cartDrawer');
+            const cartIcon = document.querySelector('img[alt="Корзина"]');
+            
+            if (isCartDrawerOpen && 
+                !cartDrawer.contains(event.target) && 
+                event.target !== cartIcon) {
+                isCartDrawerOpen = false;
+                cartDrawer.style.right = '-400px';
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Предотвращаем закрытие при клике внутри корзины
+        document.getElementById('cartDrawer').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Функция оформления заказа
+        function checkout() {
+            if (cartItems.length === 0) {
+                showNotification('Корзина пуста', 'warning');
+                return;
+            }
+
+            const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            
+            const checkoutModal = document.createElement('div');
+            checkoutModal.id = 'checkoutModal';
+            checkoutModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center;';
+            
+            checkoutModal.innerHTML = `
+                <div style="background: white; width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; position: relative;">
+                    <button onclick="closeCheckoutModal()" style="position: absolute; right: 20px; top: 20px; border: none; background: none; font-size: 24px; cursor: pointer;">×</button>
+                    
+                    <h2 style="margin: 0 0 20px;">Оформление заказа</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-weight: 500; margin-bottom: 15px;">Выберите способ оплаты:</div>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                <input type="radio" name="payment" value="card" checked onchange="selectPaymentMethod(this, 'card')" style="margin: 0 12px 0 0;">
+                                <div style="flex-grow: 1;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                        <span style="font-weight: 500;">Банковской картой</span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                        <img src="sources/payment/visa.png" alt="Visa" style="height: 20px; object-fit: contain;">
+                                        <img src="sources/payment/mastercard.png" alt="Mastercard" style="height: 20px; object-fit: contain;">
+                                        <img src="sources/payment/mir.png" alt="MIR" style="height: 20px; object-fit: contain;">
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="payment-option" style="display: flex; padding: 15px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                <input type="radio" name="payment" value="kaspi" onchange="selectPaymentMethod(this, 'kaspi')" style="margin: 0 12px 0 0;">
+                                <div style="flex-grow: 1;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                        <span style="font-weight: 500;">Kaspi Pay</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; margin-top: 8px;">
+                                        <img src="sources/payment/kaspi-full.png" alt="Kaspi" style="height: 20px; object-fit: contain;">
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="customerName" placeholder="Имя" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        <input type="tel" id="customerPhone" placeholder="Телефон" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                        <input type="text" id="customerAddress" placeholder="Адрес доставки" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px;">
+                    </div>
+
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f7f7f7; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Товары (${cartItems.length}):</span>
+                            <span>${total} KZT</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Доставка:</span>
+                            <span>1500 KZT</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-weight: 500; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                            <span>Итого:</span>
+                            <span>${total + 1500} KZT</span>
+                        </div>
+                    </div>
+
+                    <button onclick="processPayment()" 
+                        style="width: 100%; padding: 15px; background: black; color: white; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span id="paymentButtonText">Оплатить</span>
+                        <div id="paymentSpinner"></div>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(checkoutModal);
+        }
+
+        // Добавляем стили для методов оплаты
+        const paymentStyles = document.createElement('style');
+        paymentStyles.textContent = `
+            .payment-option:hover {
+                border-color: #000 !important;
+                background: #f8f8f8;
+            }
+
+            .payment-option input[type="radio"]:checked + div {
+                color: #000;
+            }
+
+            .payment-option input[type="radio"]:checked + div img {
+                transform: scale(1.1);
+                transition: transform 0.2s ease;
+            }
+
+            .payment-option:has(input[type="radio"]:checked) {
+                border-color: #000 !important;
+                background: #f8f8f8;
+            }
+        `;
+        document.head.appendChild(paymentStyles);
+
+        // Функция выбора способа оплаты
+        let selectedPaymentMethod = 'card';
+        function selectPaymentMethod(input, method) {
+            selectedPaymentMethod = method;
+        }
+
+        // Функция обработки платежа
+        let isProcessing = false;
+        async function processPayment() {
+            const buttonText = document.getElementById('paymentButtonText');
+            const spinner = document.getElementById('paymentSpinner');
+            
+            if (!buttonText || isProcessing) return;
+            
+            // Проверка заполнения полей
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+
+            if (!name || !phone || !address) {
+                showNotification('Пожалуйста, заполните все поля', 'warning');
+                return;
+            }
+            
+            isProcessing = true;
+            let dots = '';
+            const dotsInterval = setInterval(() => {
+                dots = dots.length >= 3 ? '' : dots + '.';
+                buttonText.textContent = 'Обработка платежа' + dots;
+            }, 500);
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Имитация случайного результата
+                if (Math.random() > 0.5) {
+                    throw new Error('Ошибка оплаты');
+                }
+                
+                showNotification('Оплата прошла успешно!', 'success');
+                cartItems = [];
+                saveCartToLocalStorage();
+                updateCartCount();
+                updateCartDrawer();
+                closeCheckoutModal();
+                
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                clearInterval(dotsInterval);
+                isProcessing = false;
+                buttonText.textContent = 'Оплатить';
+            }
+        }
+
+        // Функция показа уведомлений
+        function showNotification(message, type = 'info') {
+            const styles = {
+                error: {
+                    background: '#FFF2F2',
+                    color: '#DC2626',
+                    border: '#FCA5A5',
+                    icon: '✕'
+                },
+                success: {
+                    background: '#F0FDF4',
+                    color: '#16A34A',
+                    border: '#86EFAC',
+                    icon: '✓'
+                },
+                info: {
+                    background: '#EFF6FF',
+                    color: '#2563EB',
+                    border: '#93C5FD',
+                    icon: 'i'
+                },
+                warning: {
+                    background: '#FFFBEB',
+                    color: '#D97706',
+                    border: '#FCD34D',
+                    icon: '!'
+                }
+            };
+
+            const style = styles[type];
+            const notification = document.createElement('div');
+            notification.innerHTML = `
+                <div style="
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: ${style.background};
+                    color: ${style.color};
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    border: 1px solid ${style.border};
+                    z-index: 2001;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 14px;
+                    opacity: 0;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                ">
+                    <div style="
+                        width: 18px;
+                        height: 18px;
+                        border-radius: 50%;
+                        background: ${style.color};
+                        color: ${style.background};
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 12px;
+                        font-weight: bold;
+                    ">${style.icon}</div>
+                    ${message}
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+            const notificationElement = notification.firstElementChild;
+            
+            setTimeout(() => {
+                notificationElement.style.opacity = '1';
+                notificationElement.style.transform = 'translateX(-50%) translateY(0)';
+            }, 100);
+
+            setTimeout(() => {
+                notificationElement.style.opacity = '0';
+                notificationElement.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkoutModal');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Добавляем обработчик клика для закрытия модального окна при клике вне его
+        document.addEventListener('click', function(event) {
+            const checkoutModal = document.getElementById('checkoutModal');
+            if (checkoutModal && event.target === checkoutModal) {
+                closeCheckoutModal();
+            }
+        });
+
+        // Добавляем все обработчики при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчик клика по всему документу для закрытия модального окна
+            document.addEventListener('click', function(event) {
+                const checkoutModal = document.getElementById('checkoutModal');
+                if (checkoutModal && event.target === checkoutModal) {
+                    closeCheckoutModal();
+                }
+            });
+
+            // Предотвращаем закрытие при клике внутри модального окна
+            document.addEventListener('click', function(event) {
+                const modalContent = event.target.closest('div[style*="background: white"]');
+                if (modalContent) {
+                    event.stopPropagation();
+                }
+            });
+        });
+
+        function processPayment() {
+            const spinner = document.getElementById('paymentSpinner');
+            const buttonText = document.getElementById('paymentButtonText');
+            
+            if (spinner && buttonText) {
+                spinner.style.display = 'block';
+                let dots = '';
+                let dotsInterval = setInterval(() => {
+                    dots = dots.length >= 3 ? '' : dots + '.';
+                    buttonText.textContent = 'Обработка платежа' + dots;
+                }, 500);
+                
+                // Имитация процесса оплаты
+                setTimeout(() => {
+                    clearInterval(dotsInterval);
+                    spinner.style.display = 'none';
+                    buttonText.textContent = 'Оплатить';
+                    
+                    // Очищаем корзину после успешной оплаты
+                    cartItems = [];
+                    saveCartToLocalStorage();
+                    updateCartCount();
+                    updateCartDrawer();
+                    
+                    // Закрываем модальное окно
+                    closeCheckoutModal();
+                    
+                    // Показываем уведомление об успешной оплате
+                    showNotification('Заказ успешно оплачен!', 'success');
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html> 
