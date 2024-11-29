@@ -293,7 +293,7 @@
                 window.addEventListener('resize', updateCartDisplay);
             });
 
-            // обавляем обработчик для мобильной корзины
+            // ��авляем обработчик для мобильной корзины
             document.getElementById('mobileCart').addEventListener('click', toggleCart);
 
             // Обработчики для модального окна
@@ -778,6 +778,45 @@
                     notificationElement.style.transform = 'translateX(-50%) translateY(20px)';
                     setTimeout(() => notification.remove(), 300);
                 }, 3000);
+            }
+
+            function startCarousel(carouselId) {
+                const interval = 3000;
+                return setInterval(() => {
+                    const carousel = document.getElementById(carouselId);
+                    if (carousel) {
+                        carousel.scrollLeft += carousel.offsetWidth;
+                        if (carousel.scrollLeft >= carousel.scrollWidth - carousel.offsetWidth) {
+                            carousel.scrollLeft = 0;
+                        }
+                    }
+                }, interval);
+            }
+
+            function updateCarouselContent(carouselId, products) {
+                const carousel = document.getElementById(carouselId);
+                if (!carousel) return;
+                
+                // Обновляем структуру карусели
+                carousel.innerHTML = `
+                    <div class="carousel-wrapper">
+                        <button class="carousel-button prev" onclick="scrollCarousel('${carouselId}', -1)">←</button>
+                        <div class="carousel-container">
+                            ${products.map(product => `
+                                <div class="product-card">
+                                    <div class="product-image-container">
+                                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-name">${product.name}</div>
+                                        <div class="product-price">${product.price} ₽</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="carousel-button next" onclick="scrollCarousel('${carouselId}', 1)">→</button>
+                    </div>
+                `;
             }
         </script>
     </main>
