@@ -22,7 +22,7 @@
                 </button>
 
                 <!-- Лого -->
-                <a href="index.html" style="display: inline-block;">
+                <a href="main.html" style="display: inline-block;">
                     <img src="sources/logo.png" alt="Логотип" id="logoImg" style="width: 250px; transition: width 0.3s ease;">
                 </a>
 
@@ -87,7 +87,7 @@
                     <button onclick="filterProducts(this, 'женское')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">женское</button>
                     <button onclick="filterProducts(this, 'футболки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">футболки</button>
                     <button onclick="filterProducts(this, 'рубашки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">рубашки</button>
-                    <button onclick="filterProducts(this, 'аксессуары')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">аксессуары</button>
+                    <button onclick="filterProducts(this, 'аксесуары')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">аксессуары</button>
                     <button onclick="filterProducts(this, 'верхняя')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">верхняя</button>
                     <button onclick="filterProducts(this, 'штаны')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">штаны</button>
                 </div>
@@ -97,7 +97,7 @@
                         <button id="hideOutOfStockBtn" onclick="toggleHideOutOfStock()" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer;">спрятать</button>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
-                        <div>сортировка по: <span id="currentSort" style="border-bottom: 1px solid #000; cursor: pointer;">дате</span></div>
+                        <div>сортировка по: <span id="currentSort" style="border-bottom: 1px solid #000; cursor: pointer;" onclick="toggleSortMenu()">дате</span></div>
                         <div id="sortMenu" style="display: none; flex-direction: column; gap: 5px; margin-top: 5px;">
                             <button onclick="setSortBy('date')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">дате</button>
                             <button onclick="setSortBy('price-asc')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">цене ↑</button>
