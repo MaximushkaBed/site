@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Магазин одежды</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,6 +15,10 @@
                 <div id="desktopCart" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
                     <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
                     <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+                <div id="mobileCart" style="display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px !important; height: 24px !important; cursor: pointer; object-fit: contain;" onclick="toggleCart(event)">
+                    <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
                 </div>
             </div>
             <hr style="border: none; height: 1px; background-color: #ddd; margin: 5px 0; width: 100vw; position: relative; left: 50%; transform: translateX(-50%);">
@@ -109,7 +113,9 @@
                 const savedCart = localStorage.getItem('cartItems');
                 if (savedCart) {
                     cartItems = JSON.parse(savedCart);
-                    updateCartCount();
+                    const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                    document.getElementById('cartCount').textContent = count;
+                    document.getElementById('mobileCartCount').textContent = count;
                     updateCartDrawer();
                 }
             }
@@ -282,7 +288,8 @@
             }
 
             // Обновляем счетчик корзины
-            function updateCartCount(count) {
+            function updateCartCount() {
+                const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
                 document.getElementById('cartCount').textContent = count;
                 document.getElementById('mobileCartCount').textContent = count;
             }
@@ -293,7 +300,7 @@
                 window.addEventListener('resize', updateCartDisplay);
             });
 
-            // ��авляем обработчик для мобильной корзины
+            // авляем обработчик для мобильной корзины
             document.getElementById('mobileCart').addEventListener('click', toggleCart);
 
             // Обработчики для модального окна
@@ -325,21 +332,47 @@
                 event.stopPropagation();
             });
 
-            // Функция перключения корзины
+            // Функция переключения корзины
             function toggleCart(event) {
                 if (event) {
                     event.stopPropagation();
                 }
                 const drawer = document.getElementById('cartDrawer');
                 isCartDrawerOpen = !isCartDrawerOpen;
-                drawer.style.right = isCartDrawerOpen ? '0' : '-400px';
+                
+                // Получаем ширину окна
+                const isMobile = window.innerWidth <= 768;
+                
+                // Устанавливаем правильное значение для right в зависимости от ширины экрана
+                if (isMobile) {
+                    drawer.style.right = isCartDrawerOpen ? '0' : '-100%';
+                } else {
+                    drawer.style.right = isCartDrawerOpen ? '0' : '-400px';
+                }
+                
                 document.body.style.overflow = isCartDrawerOpen ? 'hidden' : '';
             }
+
+            // Обновляем обработчик изменения размера окна
+            window.addEventListener('resize', function() {
+                const drawer = document.getElementById('cartDrawer');
+                const isMobile = window.innerWidth <= 768;
+                
+                // Если корзина открыта, подстраиваем её положение под новый размер экрана
+                if (isCartDrawerOpen) {
+                    drawer.style.right = '0';
+                } else {
+                    drawer.style.right = isMobile ? '-100%' : '-400px';
+                }
+                
+                updateCartDisplay();
+            });
 
             // Функция обновления счетчика корзины
             function updateCartCount() {
                 const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
                 document.getElementById('cartCount').textContent = count;
+                document.getElementById('mobileCartCount').textContent = count;
             }
 
             // Функция обновления содержимого корзины
@@ -672,7 +705,7 @@
 
             function buyNow(product) {
                 if (!selectedSize) {
-                    showNotification('Пожалуйста, выберите размер', 'warning');
+                    showNotification('Пожалуйста, выбрите размер', 'warning');
                     return;
                 }
                 
@@ -818,6 +851,54 @@
                     </div>
                 `;
             }
+
+            // Добавляем после существующего кода
+            function initMobileCarousel(carouselId) {
+                const carousel = document.getElementById(carouselId);
+                if (!carousel || window.innerWidth > 768) return;
+
+                let touchStartX = 0;
+                let touchEndX = 0;
+                let currentPosition = 0;
+                const slideWidth = 320;
+                const maxSlides = carousel.children.length - 1;
+
+                function handleGesture() {
+                    const diff = touchStartX - touchEndX;
+                    
+                    if (Math.abs(diff) > 50) { // Минимальное расстояние для свайпа
+                        if (diff > 0 && currentPosition < maxSlides) {
+                            // Свайп влево
+                            currentPosition++;
+                        }
+                        if (diff < 0 && currentPosition > 0) {
+                            // Свайп вправо
+                            currentPosition--;
+                        }
+                    }
+
+                    carousel.style.transition = 'transform 0.3s ease';
+                    carousel.style.transform = `translateX(-${currentPosition * slideWidth}px)`;
+                }
+
+                carousel.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                });
+
+                carousel.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].clientX;
+                    handleGesture();
+                });
+            }
+
+            // Инициализируем для всех каруселей при загрузке страницы
+            window.addEventListener('load', function() {
+                if (window.innerWidth <= 768) {
+                    initMobileCarousel('tshirts-carousel');
+                    initMobileCarousel('shirts-carousel');
+                    initMobileCarousel('accessories-carousel');
+                }
+            });
         </script>
     </main>
 
@@ -883,6 +964,12 @@
                 Оформить заказ
             </button>
         </div>
+    </div>
+
+    <!-- Мобильная версия корзины -->
+    <div id="mobileCart" style="display: none; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
+        <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+        <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
     </div>
 </body>
 </html>

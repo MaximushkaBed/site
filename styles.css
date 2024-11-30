@@ -219,10 +219,28 @@ body {
 
     .carousel-container > div {
         width: 100%;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+        scroll-behavior: smooth; /* Плавная прокрутка */
+    }
+
+    .products-grid.carousel {
+        display: flex;
+        width: max-content;
+        gap: 0;
+        padding: 0 calc(50% - 160px);
     }
 
     .products-grid.carousel > div {
         width: 320px;
+        flex: 0 0 320px;
+        scroll-snap-align: start;
+        margin: 0;
+        padding: 0;
     }
 
     .carousel-btn {
@@ -264,6 +282,182 @@ body {
         grid-column: auto !important;
         text-align: center !important;
     }
+
+    /* Центрирование названий категорий */
+    .category p {
+        text-align: center !important;
+        margin: 0 !important;
+    }
+
+    /* Мобильная корзина */
+    #mobileCart {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 999;
+    }
+
+    #mobileCart img {
+        width: 24px !important;
+        height: 24px !important;
+        object-fit: contain;
+        max-width: none;
+        max-height: none;
+    }
+
+    #desktopCart {
+        display: none;
+    }
+
+    #mobileCart {
+        display: block;
+    }
+
+    #mobileCartCount {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #000;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+    /* Выдвижная корзина на всю ширину */
+    #cartDrawer {
+        width: 100%;
+        right: -100%;
+        max-width: 100%;
+    }
+
+    /* Исправляем анимацию открытия/закрытия корзины */
+    #cartDrawer.open {
+        right: 0;
+    }
+
+    /* Улучшения для модального окна тоара */
+    #productModal > div {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #productModalContent > div {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
+
+    #productModalContent img {
+        max-height: 40vh;
+        object-fit: contain;
+    }
+
+    /* Улучшения для кнопок размера */
+    #productModalContent button {
+        min-width: 45px;
+        height: 45px;
+        font-size: 14px;
+    }
+
+    /* Улучшения для корзины */
+    #cartDrawer {
+        padding-bottom: 80px; /* Отступ для фиксированной кнопки корзины */
+    }
+
+    #cartDrawerItems > div {
+        padding: 15px;
+    }
+
+    /* Улучшения для навигации */
+    .nav ul {
+        width: 250px !important;
+        justify-content: center;
+        gap: 20px !important;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    .logo img {
+        width: 250px !important;
+    }
+
+    .nav a {
+        font-size: 16px;
+        padding: 5px 0;
+    }
+
+    .nav li {
+        margin: 0;
+    }
+
+    /* Улучшения для карусели */
+    .carousel-container {
+        padding: 0 20px;
+    }
+
+    .category {
+        margin-bottom: 30px;
+    }
+
+    /* Скрываем кнопки навигации на мобильных */
+    .carousel-btn {
+        display: none !important;
+    }
+
+    /* Центрирова��ие названий категорий */
+    .category p {
+        text-align: center !important;
+        margin: 0 auto !important;
+        width: 280px;
+    }
+
+    /* Стили для мобильной карусели */
+    .carousel-container {
+        width: 280px;  /* Уменьшаем ширину */
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .carousel-container > div {
+        width: 100%;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        scroll-behavior: smooth;
+    }
+
+    .carousel-container > div::-webkit-scrollbar {
+        display: none;
+    }
+
+    .products-grid.carousel {
+        display: flex;
+        width: max-content;
+        gap: 0;
+    }
+
+    .products-grid.carousel > div {
+        width: 280px;  /* Уменьшаем ширину */
+        flex: 0 0 280px;  /* Уменьшаем ширину */
+        scroll-snap-align: center;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -293,5 +487,120 @@ body {
 
     .carousel-btn.next {
         right: -20px;
+    }
+
+    .nav ul {
+        width: 180px !important;
+        gap: 15px !important;
+    }
+
+    .logo img {
+        width: 180px !important;
+    }
+
+    #productModalContent button {
+        min-width: 40px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+    #cartDrawerItems > div {
+        padding: 10px;
+    }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    /* Шапка */
+    .header {
+        padding: 10px 0;
+    }
+
+    .logo img {
+        width: 180px;
+    }
+
+    .nav ul {
+        padding: 0 20px;
+    }
+
+    /* Карусели */
+    .carousel-container {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .carousel-container > div {
+        width: 100%;
+    }
+
+    .products-grid.carousel {
+        gap: 10px;
+    }
+
+    .carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .carousel-btn.prev {
+        left: -15px;
+    }
+
+    .carousel-btn.next {
+        right: -15px;
+    }
+
+    /* Карточки товаров */
+    .product-card img {
+        width: 160px;
+        height: 160px;
+    }
+
+    /* Модальное окно товара */
+    #productModal > div {
+        width: 95%;
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    #productModalContent > div {
+        flex-direction: column;
+    }
+
+    /* Корзина */
+    #cartDrawer {
+        width: 100%;
+        right: -100%;
+    }
+
+    /* Футер */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-section {
+        grid-column: auto !important;
+    }
+}
+
+/* Дополнительные стили для маленьких телефонов */
+@media (max-width: 480px) {
+    .carousel-container {
+        max-width: 280px;
+    }
+
+    .product-card img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .carousel-btn {
+        width: 25px;
+        height: 25px;
     }
 }
