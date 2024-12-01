@@ -296,12 +296,26 @@
 
             // Добавляем в сущестующие обработчики
             document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOM loaded');
+                
+                // Обновляем отображение корзины
                 updateCartDisplay();
                 window.addEventListener('resize', updateCartDisplay);
-            });
 
-            // авляем обработчик для мобильной корзины
-            document.getElementById('mobileCart').addEventListener('click', toggleCart);
+                // Безопасно добавляем обработчик для мобильной корзины
+                const mobileCart = document.getElementById('mobileCart');
+                if (mobileCart) {
+                    mobileCart.addEventListener('click', toggleCart);
+                }
+
+                // Инициализируем карусели для мобильной версии
+                if (window.innerWidth <= 768) {
+                    console.log('Mobile width detected, initializing carousels');
+                    initMobileCarousel('tshirts-carousel');
+                    initMobileCarousel('shirts-carousel');
+                    initMobileCarousel('accessories-carousel');
+                }
+            });
 
             // Обработчики для модального окна
             document.getElementById('productModal').addEventListener('click', function(event) {
@@ -419,7 +433,7 @@
                 saveCartToLocalStorage();
             }
 
-            // Добавляем функции для работы с корзиной
+            // Добавляем функции  работы с корзиной
             function updateCartItemQuantity(index, change) {
                 cartItems[index].quantity += change;
                 
@@ -857,48 +871,47 @@
                 const carousel = document.getElementById(carouselId);
                 if (!carousel || window.innerWidth > 768) return;
 
-                let touchStartX = 0;
-                let touchEndX = 0;
-                let currentPosition = 0;
-                const slideWidth = 320;
-                const maxSlides = carousel.children.length - 1;
+                // Создаем подсказку для свайпа
+                const swipeHint = document.createElement('div');
+                swipeHint.className = 'swipe-hint';
+                
+                // Добавляем подсказку в контейнер карусели
+                const container = carousel.closest('.carousel-container');
+                if (!container) return; // Проверяем наличие контейнера
 
-                function handleGesture() {
-                    const diff = touchStartX - touchEndX;
+                // Добавляем подсказку
+                container.appendChild(swipeHint);
+
+                // Функция для запуска одной анимации
+                function playAnimation() {
+                    swipeHint.classList.add('animate');
                     
-                    if (Math.abs(diff) > 50) { // Минимальное расстояние для свайпа
-                        if (diff > 0 && currentPosition < maxSlides) {
-                            // Свайп влево
-                            currentPosition++;
-                        }
-                        if (diff < 0 && currentPosition > 0) {
-                            // Свайп вправо
-                            currentPosition--;
-                        }
+                    // Удаляем класс после завершения анимации
+                    setTimeout(() => {
+                        swipeHint.classList.remove('animate');
+                    }, 1500);
+                }
+
+                // Запускаем анимацию 3 раза с интервалом
+                let animationCount = 0;
+                const maxAnimations = 3;
+                
+                function runAnimationSequence() {
+                    if (animationCount < maxAnimations) {
+                        playAnimation();
+                        animationCount++;
+                        setTimeout(runAnimationSequence, 2000);
+                    } else {
+                        // Удаляем подсказку после всех анимаций
+                        setTimeout(() => {
+                            swipeHint.remove();
+                        }, 1500);
                     }
-
-                    carousel.style.transition = 'transform 0.3s ease';
-                    carousel.style.transform = `translateX(-${currentPosition * slideWidth}px)`;
                 }
 
-                carousel.addEventListener('touchstart', (e) => {
-                    touchStartX = e.touches[0].clientX;
-                });
-
-                carousel.addEventListener('touchend', (e) => {
-                    touchEndX = e.changedTouches[0].clientX;
-                    handleGesture();
-                });
+                // Запускаем первую анимацию
+                runAnimationSequence();
             }
-
-            // Инициализируем для всех каруселей при загрузке страницы
-            window.addEventListener('load', function() {
-                if (window.innerWidth <= 768) {
-                    initMobileCarousel('tshirts-carousel');
-                    initMobileCarousel('shirts-carousel');
-                    initMobileCarousel('accessories-carousel');
-                }
-            });
         </script>
     </main>
 
