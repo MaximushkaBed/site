@@ -297,7 +297,7 @@
 
     /* Сетка товаров */
     #productsGrid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 10px;
         padding: 0 10px;
     }
@@ -331,16 +331,22 @@
     }
 }
 
-/* Для маленьких экранов */
-@media (max-width: 375px) {
-    .filter-options button {
-        padding: 6px 12px;
-        font-size: 13px;
+/* Для узких мобильных экранов */
+@media (max-width: 480px) {
+    #productsGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 0 20px;
     }
 
-    #productsGrid {
-        gap: 8px;
-        padding: 0 8px;
+    .product-card {
+        width: 100%;
+        max-width: none;
+    }
+
+    .product-image-container {
+        width: 100%;
+        max-width: none;
     }
 }
 
@@ -355,5 +361,24 @@
     .filter-options {
         padding: 0 10px;
         gap: 5px;
+    }
+}
+
+/* Для узких мобильных экранов */
+@media (max-width: 480px) {
+    #productsGrid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 0 20px;
+    }
+
+    .product-card {
+        width: 100%;
+        max-width: none;
+    }
+
+    .product-image-container {
+        width: 100%;
+        max-width: none;
     }
 } 
