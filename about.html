@@ -10,23 +10,20 @@
     <!-- Шапка сайта (копируем из main.html) -->
     <header class="header" style="padding-top: 5px;">
         <div class="container">
-            <div class="header-top" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; position: relative; height: 60px;">
-                <!-- Бургер меню -->
-                <button id="burgerBtn" class="burger-btn" style="background: none; border: none; padding: 10px; cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 1; display: none;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-
+            <div class="logo" style="position: relative;">
                 <!-- Лого -->
-                <a href="index.html" style="display: inline-block;">
-                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="width: 250px; transition: width 0.3s ease;">
+                <a href="index.html">
+                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="display: block; margin: 0 auto; margin-bottom: 10px; width: 250px">
                 </a>
 
+                <!-- Мобильная корзина -->
+                <div id="mobileCart" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+                    <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+
                 <!-- Корзина -->
-                <div id="desktopCart" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                <div id="desktopCart" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
                     <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
                     <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
                 </div>
@@ -158,6 +155,7 @@ oblivio - это бренд одежды,
         // Загрузка корзины при загрузке страницы
         window.addEventListener('load', function() {
             loadCartFromLocalStorage();
+            updateCartDisplay();
         });
 
         // Остальные функции для работы с корзиной (toggleCart, updateCartCount, updateCartDrawer и т.д.)
@@ -178,6 +176,7 @@ oblivio - это бренд одежды,
         function updateCartCount() {
             const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartCount').textContent = count;
+            document.getElementById('mobileCartCount').textContent = count;
         }
 
         // Функция обновления содержимого корзины
@@ -579,6 +578,27 @@ oblivio - это бренд одежды,
                     showNotification('Заказ успешно оплачен!', 'success');
                 }, 2000);
             }
+        }
+
+        // Добавляем функцию обновления отображения корзины
+        function updateCartDisplay() {
+            const isMobile = window.innerWidth <= 768;
+            const desktopCart = document.getElementById('desktopCart');
+            const mobileCart = document.getElementById('mobileCart');
+            
+            if (desktopCart && mobileCart) {
+                desktopCart.style.display = isMobile ? 'none' : 'block';
+                mobileCart.style.display = isMobile ? 'block' : 'none';
+            }
+        }
+
+        // Добавляем обработчик изменения размера окна
+        window.addEventListener('resize', updateCartDisplay);
+
+        function updateLogoSize() {
+            const logo = document.getElementById('logoImg');
+            const isMobile = window.innerWidth <= 768;
+            logo.style.width = isMobile ? '180px' : '250px';
         }
     </script>
 </body>

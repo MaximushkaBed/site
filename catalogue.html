@@ -11,23 +11,20 @@
     <!-- Шапка сайта -->
     <header class="header" style="padding-top: 5px;">
         <div class="container">
-            <div class="header-top" style="display: flex; justify-content: center; align-items: center; padding: 10px 0; position: relative; height: 60px;">
-                <!-- Бургер меню -->
-                <button id="burgerBtn" class="burger-btn" style="background: none; border: none; padding: 10px; cursor: pointer; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 1; display: none;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </button>
-
+            <div class="logo" style="position: relative;">
                 <!-- Лого -->
-                <a href="index.html" style="display: inline-block;">
-                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="width: 250px; transition: width 0.3s ease;">
+                <a href="index.html">
+                    <img src="sources/logo.png" alt="Логотип" id="logoImg" style="display: block; margin: 0 auto; margin-bottom: 10px; width: 250px">
                 </a>
 
-                <!-- Корзина -->
-                <div id="desktopCart" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                <!-- Мобильная корзина -->
+                <div id="mobileCart" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                    <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
+                    <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
+                </div>
+
+                <!-- Десктопная корзина -->
+                <div id="desktopCart" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
                     <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
                     <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
                 </div>
@@ -46,63 +43,40 @@
                 window.onload = function() {
                     const logo = document.getElementById('logoImg');
                     document.documentElement.style.setProperty('--logo-width', logo.offsetWidth + 'px');
+                    updateCartDisplay();
                 } </script>
         </div>
     </header>
-
-    <!-- Боковое меню -->
-    <div id="sideMenu" style="position: fixed; top: 0; left: -300px; width: 300px; height: 100vh; background: white; z-index: 1001; transition: left 0.3s ease; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
-        <div style="padding: 20px;">
-            <button onclick="toggleMenu()" style="background: none; border: none; font-size: 24px; position: absolute; right: 20px; top: 20px; cursor: pointer;">×</button>
-            <div style="margin-top: 60px;">
-                <!-- Мобильная корзина (показывается только на мобильных) -->
-                <div id="mobileCart" style="display: none; padding: 12px; margin: 5px 0; border-bottom: 1px solid #eee;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px;">
-                        <span>Корзина</span>
-                        <div id="mobileCartCount" style="margin-left: auto; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
-                    </div>
-                </div>
-                
-                <!-- Категории -->
-                <button onclick="filterProducts(this, 'мужское')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">мужское</button>
-                <button onclick="filterProducts(this, 'женское')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">женское</button>
-                <button onclick="filterProducts(this, 'футболки')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">футболки</button>
-                <button onclick="filterProducts(this, 'рубашки')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">рубашки</button>
-                <button onclick="filterProducts(this, 'аксессуары')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">аксессуары</button>
-                <button onclick="filterProducts(this, 'верхняя')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">верхняя</button>
-                <button onclick="filterProducts(this, 'штаны')" style="width: 100%; padding: 12px; margin: 5px 0; border: none; background: none; text-align: left; cursor: pointer;">штаны</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Основной контент каталога -->
     <main>
         <div class="container">
             <!-- Фильтры и сортировка -->
-            <div class="filters" style="margin: 0px 0; position: relative;">
-                <div class="filter-options" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-                    <button class="mobile-filter-close" onclick="toggleMobileFilters()" style="display: none;">✕</button>
-                    <button onclick="filterProducts(this, 'мужское')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">мужское</button>
-                    <button onclick="filterProducts(this, 'женское')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">женское</button>
-                    <button onclick="filterProducts(this, 'футболки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">футболки</button>
-                    <button onclick="filterProducts(this, 'рубашки')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">рубашки</button>
-                    <button onclick="filterProducts(this, 'аксесуары')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">аксессуары</button>
-                    <button onclick="filterProducts(this, 'верхняя')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">верхняя</button>
-                    <button onclick="filterProducts(this, 'штаны')" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer; transition: all 0.3s;">штаны</button>
+            <div class="filters">
+                <!-- Фильтры категорий (с горизонтальной прокруткой) -->
+                <div class="filter-options">
+                    <button onclick="filterProducts(this, 'мужское')">мужское</button>
+                    <button onclick="filterProducts(this, 'женское')">женское</button>
+                    <button onclick="filterProducts(this, 'футболки')">футболки</button>
+                    <button onclick="filterProducts(this, 'рубашки')">рубашки</button>
+                    <button onclick="filterProducts(this, 'аксессуары')">аксессуары</button>
+                    <button onclick="filterProducts(this, 'верхняя')">верхняя</button>
+                    <button onclick="filterProducts(this, 'штаны')">штаны</button>
                 </div>
-                <div class="sort-options" style="position: absolute; left: 0; top: 60px; display: flex; flex-direction: column; gap: 10px; margin-right: 20px;">
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <span>нет в наличии:</span>
-                        <button id="hideOutOfStockBtn" onclick="toggleHideOutOfStock()" style="padding: 8px 16px; border: 1px solid #ddd; background: transparent; cursor: pointer;">спрятать</button>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
-                        <div>сортировка по: <span id="currentSort" style="border-bottom: 1px solid #000; cursor: pointer;" onclick="toggleSortMenu()">дате</span></div>
-                        <div id="sortMenu" style="display: none; flex-direction: column; gap: 5px; margin-top: 5px;">
-                            <button onclick="setSortBy('date')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">дате</button>
-                            <button onclick="setSortBy('price-asc')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">цене ↑</button>
-                            <button onclick="setSortBy('price-desc')" style="padding: 8px 16px; border: none; background: transparent; cursor: pointer; text-align: left;">цене ↓</button>
-                        </div>
+            </div>
+
+            <!-- Управление и сортировка (статичные) -->
+            <div class="sort-options">
+                <div>
+                    <span>нет в наличии:</span>
+                    <button id="hideOutOfStockBtn" onclick="toggleHideOutOfStock()">спрятать</button>
+                </div>
+                <div>
+                    сортировка по: <span id="currentSort" onclick="toggleSortMenu()">дате</span>
+                    <div id="sortMenu" style="display: none;">
+                        <button onclick="setSortBy('date')">дате</button>
+                        <button onclick="setSortBy('price-asc')">цене ↑</button>
+                        <button onclick="setSortBy('price-desc')">цене ↓</button>
                     </div>
                 </div>
             </div>
@@ -159,7 +133,7 @@
                     products = data.products;
                     applyFiltersAndSort();
                 } catch (error) {
-                    console.error('Ошибка загрузки товаров:', error);
+                    console.error('Оибка загрузки товаров:', error);
                 }
             });
 
@@ -172,9 +146,14 @@
             function updateHideOutOfStockButton() {
                 const button = document.getElementById('hideOutOfStockBtn');
                 if (hideOutOfStock) {
-                    button.style.backgroundColor = '#f0f0f0';
+                    button.style.backgroundColor = '#000';
+                    button.style.color = '#fff';
+                    button.style.borderColor = '#000';
                 } else {
                     button.style.backgroundColor = 'transparent';
+                    button.style.color = '';
+                    button.style.borderColor = '#ddd';
+                    button.style.background = '';
                 }
             }
 
@@ -187,16 +166,19 @@
                     // Если да - очищаем фильтр и убираем подсветку
                     activeFilters.clear();
                     allFilterButtons.forEach(btn => {
-                        btn.style.backgroundColor = 'transparent';
+                        btn.style.backgroundColor = '';
+                        btn.style.color = '';
                     });
                 } else {
-                    // Есл нет - очищаем предыдущие фильтры и активируем новый
+                    // Если нет - очищаем предыдущие фильтры и активируем новый
                     activeFilters.clear();
                     allFilterButtons.forEach(btn => {
-                        btn.style.backgroundColor = 'transparent';
+                        btn.style.backgroundColor = '';
+                        btn.style.color = '';
                     });
                     activeFilters.add(category);
-                    button.style.backgroundColor = '#f0f0f0';
+                    button.style.backgroundColor = '#000';
+                    button.style.color = '#fff';
                 }
                 
                 currentPage = 1;
@@ -241,7 +223,7 @@
                     // Сачала проверяем стаус наличия
                     if (hideOutOfStock && !product.inStock) return false;
                     
-                    // Если нет активных фильтров категорий, показываем все товары
+                    // Если нет активны фильтров категорий, показываем все товары
                     if (activeFilters.size === 0) return true;
                     
                     // Иначе проверяем соответствие выбранным категориям
@@ -380,23 +362,24 @@
                 const desktopCart = document.getElementById('desktopCart');
                 const mobileCart = document.getElementById('mobileCart');
                 
-                desktopCart.style.display = isMobile ? 'none' : 'block';
-                mobileCart.style.display = isMobile ? 'block' : 'none';
+                if (desktopCart && mobileCart) {
+                    desktopCart.style.display = isMobile ? 'none' : 'block';
+                    mobileCart.style.display = isMobile ? 'block' : 'none';
+                }
             }
 
             // Обновляем счетчик корзины
-            function updateCartCount(count) {
-                document.getElementById('cartCount').textContent = count;
-                document.getElementById('mobileCartCount').textContent = count;
+            function updateCartCount() {
+                const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cartCount').textContent = totalItems;
+                document.getElementById('mobileCartCount').textContent = totalItems;
             }
 
             // Инициализация при згрузке страницы
             document.addEventListener('DOMContentLoaded', function() {
-                updateCartDisplay();
                 updateLogoSize();
                 updateBurgerVisibility();
                 window.addEventListener('resize', () => {
-                    updateCartDisplay();
                     updateLogoSize();
                     updateBurgerVisibility();
                 });
@@ -413,7 +396,7 @@
             function updateLogoSize() {
                 const logo = document.getElementById('logoImg');
                 const isMobile = window.innerWidth <= 768;
-                logo.style.width = isMobile ? '150px' : '250px';
+                logo.style.width = isMobile ? '180px' : '250px';
             }
 
             function updateBurgerVisibility() {
@@ -506,7 +489,7 @@
                 updateCartDrawer();
                 updateCartCount();
                 
-                // Закрываем модальное окно и переходим к оформлению
+                // Закрываем модальное окно и переходим к формлению
                 closeProductModal();
                 checkout();
             }
@@ -579,14 +562,8 @@
                 }
 
                 saveCartToLocalStorage();
-                updateCartCount(cartItems.length);
+                updateCartCount();
                 updateCartDrawer();
-            }
-
-            function updateCartCount() {
-                const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-                document.getElementById('cartCount').textContent = totalItems;
-                document.getElementById('mobileCartCount').textContent = totalItems;
             }
 
             function updateCartDrawer() {
@@ -789,7 +766,7 @@
                 }
             }
 
-            // Добавляем стили
+            // Дбавляем стили
             const paymentStyles = document.createElement('style');
             paymentStyles.textContent = `
                 .payment-option:hover {
@@ -878,7 +855,7 @@
                 }
             });
 
-            // Предотвращаем закрытие при клике внутри контента
+            // Преотвращаем закрытие при клике внутри контента
             document.querySelector('#productModal > div').addEventListener('click', function(event) {
                 event.stopPropagation();
             });
@@ -1098,7 +1075,7 @@
 
     <!-- Скрипты -->
     <script>
-        // ... существующие скрипты для корзины и другой функциональности ...
+        // ... существующие скрипты для корзины и ругой функциональности ...
     </script>
 
     <!-- Модальное окно товара -->
