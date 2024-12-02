@@ -5,24 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Oblivio market</title>
     
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-       ym(99100629, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/99100629" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-    
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚫</text></svg>">
     
@@ -309,7 +291,7 @@
                 mobileCart.style.display = isMobile ? 'block' : 'none';
             }
 
-            // Обновляем счетчик корзин
+            // Обновляем счетчик корзин��
             function updateCartCount() {
                 const count = cartItems.reduce((sum, item) => sum + item.quantity, 0);
                 document.getElementById('cartCount').textContent = count;
@@ -1006,5 +988,21 @@
         <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
         <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
     </div>
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(99100629, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/99100629" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </body>
 </html>

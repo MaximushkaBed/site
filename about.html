@@ -5,24 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>О нас - Oblivio market</title>
     
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript" >
-       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-       ym(99100629, "init", {
-            clickmap:true,
-            trackLinks:true,
-            accurateTrackBounce:true,
-            webvisor:true
-       });
-    </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/99100629" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
-    
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚫</text></svg>">
     
@@ -44,7 +26,7 @@
                     <div id="mobileCartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
                 </div>
 
-                <!-- Корзи��а -->
+                <!-- Корзина -->
                 <div id="desktopCart" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 999;">
                     <img src="sources/products/cart2.png" alt="Корзина" style="width: 24px; height: 24px; cursor: pointer;" onclick="toggleCart(event)">
                     <div id="cartCount" style="position: absolute; top: -8px; right: -8px; background-color: #000; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 12px;">0</div>
@@ -156,7 +138,7 @@ oblivio - это бренд одежды,
 
     <!-- Скрипты для работы с корзиной -->
     <script>
-        // Копируем необходимые фу��кции из main.html
+        // Копируем необходимые функции из main.html
         let cartItems = [];
         let isCartDrawerOpen = false;
 
@@ -232,7 +214,7 @@ oblivio - это бренд одежды,
                                 <span>${item.quantity}</span>
                                 <button onclick="updateCartItemQuantity(${index}, 1)" style="width: 20px; height: 20px; border: 1px solid #ddd; background: none; cursor: pointer;">+</button>
                                 <button onclick="removeFromCart(${index})" style="margin-left: auto; border: none; background: none; color: #999; cursor: pointer;">
-                                    Удал��ть
+                                    Удалить
                                 </button>
                             </div>
                         </div>
@@ -623,5 +605,21 @@ oblivio - это бренд одежды,
             logo.style.width = isMobile ? '180px' : '250px';
         }
     </script>
-</body>
+    <script type="text/javascript" >
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+ 
+        ym(99100629, "init", {
+             clickmap:true,
+             trackLinks:true,
+             accurateTrackBounce:true,
+             webvisor:true
+        });
+     </script>
+     <noscript><div><img src="https://mc.yandex.ru/watch/99100629" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+     <!-- /Yandex.Metrika counter -->
+ </body>
 </html> 
