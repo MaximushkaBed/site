@@ -506,6 +506,39 @@ body {
         background-color: #000;
         transform: scale(1.2);
     }
+
+    /* Удаляем или комментируем этот конфликтующий стиль */
+    /* .product-card img {
+        width: 160px;
+        height: 160px;
+    } */
+
+    /* Добавляем новые стили */
+    .product-image-container {
+        width: 240px !important;
+        height: 240px !important;
+        margin: 0 auto;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Переопределяем все возможные селекторы для изображения */
+    .products-grid img,
+    .product-card img,
+    .product-image-container img,
+    .product-image,
+    .product-card .product-image,
+    .product-image-container .product-image,
+    .carousel .product-image {
+        min-width: 220px !important;
+        min-height: 220px !important;
+        width: 220px !important;
+        height: 220px !important;
+        object-fit: contain !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -518,9 +551,15 @@ body {
         width: 280px;
     }
 
-    .products-grid > div img {
-        width: 140px !important;
-        height: 140px !important;
+    .products-grid img,
+    .product-card img,
+    .product-image-container img,
+    .product-image,
+    .carousel .product-image {
+        min-width: 220px !important;
+        min-height: 220px !important;
+        width: 220px !important;
+        height: 220px !important;
     }
 
     .carousel-btn {

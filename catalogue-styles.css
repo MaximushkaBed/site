@@ -333,6 +333,30 @@
 
 /* Для узких мобильных экранов */
 @media (max-width: 480px) {
+    .product-image-container {
+        width: 240px !important;
+        height: 240px !important;
+        margin: 0 auto;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Переопределяем все возможные селекторы для изображения */
+    .product-card img,
+    .product-image-container img,
+    .product-image,
+    .product-card .product-image,
+    .product-image-container .product-image {
+        min-width: 220px !important;
+        min-height: 220px !important;
+        width: 220px !important;
+        height: 220px !important;
+        object-fit: contain !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
+    }
+
     #productsGrid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -341,12 +365,8 @@
 
     .product-card {
         width: 100%;
-        max-width: none;
-    }
-
-    .product-image-container {
-        width: 100%;
-        max-width: none;
+        display: flex;
+        justify-content: center;
     }
 }
 
