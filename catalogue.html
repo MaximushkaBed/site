@@ -9,7 +9,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚫</text></svg>">
     
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="catalogue-styles.css">
+    <link rel="stylesheet" href="catalogue-styles.css?v=1">
 </head>
 <body class="catalogue-page">
     <!-- Шапка сайта -->
@@ -172,6 +172,7 @@
                     allFilterButtons.forEach(btn => {
                         btn.style.backgroundColor = '';
                         btn.style.color = '';
+                        btn.classList.remove('active');
                     });
                 } else {
                     // Если нет - очищаем предыдущие фильтры и активируем новый
@@ -179,10 +180,10 @@
                     allFilterButtons.forEach(btn => {
                         btn.style.backgroundColor = '';
                         btn.style.color = '';
+                        btn.classList.remove('active');
                     });
                     activeFilters.add(category);
-                    button.style.backgroundColor = '#000';
-                    button.style.color = '#fff';
+                    button.classList.add('active');
                 }
                 
                 currentPage = 1;
@@ -475,7 +476,7 @@
                 document.body.style.overflow = 'hidden';
             }
 
-            // Добавляем функцию для быстрой покупки
+            // Добавляем функцию для бытрой покупки
             function buyNow(product) {
                 if (!selectedSize) {
                     showNotification('Пожалуйста, выберите размер', 'warning');
@@ -949,7 +950,7 @@
 
             function processPayment() {
                 closeCheckoutModal();
-                showNotification('Заказ успешно оплачен!', 'success');
+                showNotification('Заказ успено оплачен!', 'success');
                 cartItems = [];
                 saveCartToLocalStorage();
                 updateCartCount(0);

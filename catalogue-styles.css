@@ -92,8 +92,9 @@
     }
 
     .filter-options button.active {
-        background: #000 !important;
-        color: #fff !important;
+        background: #f5f5f5 !important;
+        color: #000 !important;
+        border-color: #ddd;
     }
 
     .sort-options {
@@ -224,15 +225,16 @@
     .filter-options button.active,
     .filter-options button:active,
     .filter-options button[style*="background-color: rgb(240, 240, 240)"] {
-        background: #000 !important;
-        color: #fff !important;
-        border-color: #000;
+        background: #f5f5f5 !important;
+        color: #000 !important;
+        border-color: #ddd;
     }
 
     /* Добавляем стиль для активного состояния при клике */
     .filter-options button:active {
-        background: #000 !important;
-        color: #fff !important;
+        background: #f5f5f5 !important;
+        color: #000 !important;
+        border-color: #ddd;
     }
 
     /* Управление и сортировка */
